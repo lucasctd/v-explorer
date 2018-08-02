@@ -1,0 +1,48 @@
+{
+  "name": "v-explorer",
+  "version": "0.0.1",
+  "description": "A vue component to explore files and folders",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasctd/v-explorer.git"
+  },
+  "keywords": [
+    "vue",
+    "explorer",
+    "v-explorer",
+    "javascript"
+  ],
+  "author": "Lucas Reis <lucas@programmer.com.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lucasctd/v-explorer/issues"
+  },
+  "homepage": "https://github.com/lucasctd/v-explorer#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.2",
+    "@fortawesome/free-regular-svg-icons": "^5.2.0",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "laravel-mix": "^2.1.11",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
+  },
+  "resolve": {
+    "alias": {
+      "vue": "vue.common.js"
+    }
+  }
+}

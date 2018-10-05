@@ -62,7 +62,7 @@ export default {
         },
         dragend() {
             this.dragging = false;
-            this.$emit('dragend', this.file);  
+            this.$emit('dragend', this.file);
         },
         dragover() {
         },
@@ -111,7 +111,6 @@ export default {
     .v-exp-block {
         width 100px
         height 135px
-        float left 
         margin 10px 5px
         position relative
     }

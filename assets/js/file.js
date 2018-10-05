@@ -1,5 +1,5 @@
 /**
- * File clas
+ * File class
  * @author Lucas Reis <lucas@programmer.com.br>
  */
 export default class File {

@@ -10,8 +10,8 @@ new Vue({
     data: {
         files: [
             new File(1, "File 1 wqewq weqeq www wwww wwww", 0),
-            new File(2, "File 2 qwew eeeee", 5),
-            new File(3, "File 3", 10)
+            new File(2, "File 2 qwew eeeee", 2),
+            new File(3, "File 3", 4)
         ],
         options: [
             new Option('Delete', (e) => {

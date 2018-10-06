@@ -2542,15 +2542,29 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('v-explorer', __WEBPACK_IM
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     data: {
-        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www wwww wwww", 0), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 2), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4)],
-        options: [new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('Delete', function (e) {}, function (file) {
-            return file.id == 2;
-        }), new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('Save', function (e) {})]
+        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 2), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4)],
+        options: [new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('Delete', function (e) {
+            console.log("Delete");
+            console.log(e);
+        }, function (file) {
+            return !file.blank;
+        }), new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('Save', function (e) {
+            console.log("Save");
+            console.log(e);
+        }, function (file) {
+            return !file.blank;
+        }), new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('New deFolder', function (e) {
+            console.log("New deFolder");
+        }, function (file) {
+            return file.blank;
+        }), new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('New de Folder que eu criei', function (e) {
+            console.log("New de Folder");
+        }, function (file) {
+            return file.blank;
+        })]
     },
     methods: {
-        contextmenu: function contextmenu(e) {
-            console.log(e);
-        }
+        contextmenu: function contextmenu(e) {}
     }
 });
 
@@ -14158,9 +14172,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         updateFiles: function updateFiles(file) {
-            var tempIndex = this.draggedFile.index;
-            this.draggedFile.index = file.index;
-            file.index = tempIndex;
+            var that = this;
+            if (!file.blank) {
+                var draggedEl = document.getElementById(that.draggedFile.id);
+                var fileEl = document.getElementById(file.id);
+                console.log(draggedEl.offsetTop);
+                console.log(draggedEl.offsetLeft);
+                console.log(that.draggedFile);
+                fileEl.style.position = 'absolute';
+                fileEl.style.left = draggedEl.offsetLeft + 'px';
+                fileEl.style.top = draggedEl.offsetTop + 'px';
+            }
+            /*setTimeout(() => {
+            	let tempIndex = that.draggedFile.index;
+            	that.draggedFile.index = file.index;
+            	file.index = tempIndex;
+            }, 3000);*/
         },
         dragstart: function dragstart(file) {
             this.draggedFile = file;
@@ -14186,7 +14213,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('contextmenu', this.selectedFiles);
         },
         addFile: function addFile(file) {
-            if (file !== undefined) {
+            if (file) {
                 var rs = this.selectedFiles.find(function (f) {
                     return f.id === file.id;
                 });
@@ -14292,7 +14319,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: small;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 1s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #00f;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n", ""]);
+exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: left 5s, top 5s, position 5s;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 1s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #00f;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n", ""]);
 
 // exports
 
@@ -14383,8 +14410,8 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
             if (!this.file.blank) {
                 this.selected = true;
                 file = this.file;
+                this.$emit('contextmenu', file);
             }
-            this.$emit('contextmenu', file);
             this.contextMenuTop = e.clientY;
             this.contextMenuLeft = e.clientX;
             this.showContextMenu = true;
@@ -14393,10 +14420,10 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
             if (!this.file.blank) {
                 this.selected = true;
                 e.file = this.file;
+                this.$emit('click', e);
             } else {
                 document.dispatchEvent(new Event("click"));
             }
-            this.$emit('click', e);
         },
         addListeners: function addListeners() {
             var _this = this;
@@ -14506,7 +14533,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.v-exp-context-menu {\n  width: 120px;\n  min-height: 150px;\n  position: fixed;\n  background-color: #fff;\n  opacity: 0.98;\n  z-index: 10000;\n  border: 1px solid #808080;\n  box-shadow: 5px 4px 15px -4px rgba(0,0,0,0.75);\n}\n.v-exp-context-menu-option {\n  text-transform: uppercase;\n  height: 20px;\n  cursor: pointer;\n  padding: 5px 10px;\n  overflow: hidden;\n}\n.v-exp-context-menu-option a {\n  text-decoration: none;\n  color: #808080;\n  font-weight: bold;\n}\n.v-exp-context-menu-option:hover {\n  color: #fff;\n  background-color: #808080;\n}\n.v-exp-context-menu-fade-enter-active,\n.v-exp-context-menu-fade-leave-active {\n  transition: opacity 0.5s;\n}\n.v-exp-context-menu-fade-enter,\n.v-exp-context-menu-fade-leave-to {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.v-exp-context-menu {\n  min-width: 110px;\n  max-width: 130px;\n  min-height: 150px;\n  position: fixed;\n  background-color: #fff;\n  opacity: 0.98;\n  z-index: 10000;\n  border: 1px solid #808080;\n  box-shadow: 5px 4px 15px -4px rgba(0,0,0,0.75);\n}\n.v-exp-context-menu-option {\n  text-transform: uppercase;\n  min-height: 20px;\n  cursor: pointer;\n  padding: 5px 10px;\n  overflow: hidden;\n  color: #808080;\n  font-size: 13px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-context-menu-option:hover {\n  color: #fff;\n  background-color: #808080;\n}\n.v-exp-context-menu-fade-enter-active,\n.v-exp-context-menu-fade-leave-active {\n  transition: opacity 0.5s;\n}\n.v-exp-context-menu-fade-enter,\n.v-exp-context-menu-fade-leave-to {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -14517,6 +14544,7 @@ exports.push([module.i, "\n.v-exp-context-menu {\n  width: 120px;\n  min-height:
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -14556,7 +14584,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         click: function click(e, opt) {
-            opt.click(this.file);
+            if (!this.file.blank) {
+                opt.click(this.file);
+            } else {
+                opt.click(null);
+            }
             this.hide();
         },
         hideAllContextMenu: function hideAllContextMenu() {
@@ -14577,12 +14609,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         hide: function hide() {
             this.$emit('update:show', false);
+        },
+        fontSize: function fontSize(name) {
+            //let size = 
+            /*if(name.length < 13) {
+            	return 
+            }*/
         }
     },
     watch: {
         show: function show(val) {
+            var _this = this;
+
             if (val) {
                 this.hideAllContextMenu();
+                this.$nextTick(function () {
+                    //resize font to fit in the div's default height
+                    var defaultFontSize = 13;
+                    _this.$refs.opt.forEach(function (el) {
+                        while (el.clientHeight > 30) {
+                            el.style.fontSize = --defaultFontSize + 'px';
+                        }
+                    });
+                });
             }
         }
     }
@@ -14610,7 +14659,10 @@ var render = function() {
                   "div",
                   {
                     key: opt.name,
+                    ref: "opt",
+                    refInFor: true,
                     staticClass: "v-exp-context-menu-option",
+                    style: { fontSize: _vm.fontSize(opt.name) + "px" },
                     on: {
                       click: function($event) {
                         $event.stopPropagation()
@@ -14618,7 +14670,11 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("\n            " + _vm._s(opt.name) + "\n        ")]
+                  [
+                    _vm._v(
+                      "\n                " + _vm._s(opt.name) + "\n            "
+                    )
+                  ]
                 )
               : _vm._e()
           })
@@ -15693,22 +15749,20 @@ var render = function() {
         class: { "v-exp-file-selected-enabled": _vm.selected }
       }),
       _vm._v(" "),
-      !_vm.file.blank
-        ? _c("v-context-menu", {
-            attrs: {
-              show: _vm.showContextMenu,
-              file: _vm.file,
-              options: _vm.options,
-              top: _vm.contextMenuTop,
-              left: _vm.contextMenuLeft
-            },
-            on: {
-              "update:show": function($event) {
-                _vm.showContextMenu = $event
-              }
-            }
-          })
-        : _vm._e()
+      _c("v-context-menu", {
+        attrs: {
+          show: _vm.showContextMenu,
+          file: _vm.file,
+          options: _vm.options,
+          top: _vm.contextMenuTop,
+          left: _vm.contextMenuLeft
+        },
+        on: {
+          "update:show": function($event) {
+            _vm.showContextMenu = $event
+          }
+        }
+      })
     ],
     1
   )

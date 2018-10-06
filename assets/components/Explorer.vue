@@ -46,9 +46,22 @@ export default {
     },
     methods: {
         updateFiles(file) {
-            let tempIndex = this.draggedFile.index;
-            this.draggedFile.index = file.index;
-            file.index = tempIndex;
+			const that = this;
+			if(!file.blank) {
+				let draggedEl = document.getElementById(that.draggedFile.id);
+				let fileEl = document.getElementById(file.id);
+				console.log(draggedEl.offsetTop);
+				console.log(draggedEl.offsetLeft);
+				console.log(that.draggedFile);
+				fileEl.style.position = 'absolute';
+				fileEl.style.left = draggedEl.offsetLeft + 'px';
+				fileEl.style.top = draggedEl.offsetTop + 'px';
+			}
+			/*setTimeout(() => {
+				let tempIndex = that.draggedFile.index;
+				that.draggedFile.index = file.index;
+				file.index = tempIndex;
+			}, 3000);*/
         },
         dragstart(file) {
             this.draggedFile = file;
@@ -73,7 +86,7 @@ export default {
             this.$emit('contextmenu', this.selectedFiles);
         },
         addFile(file) {
-            if (file !== undefined) {
+            if (file) {
                 const rs = this.selectedFiles.find(f => {
                     return f.id === file.id;
                 });

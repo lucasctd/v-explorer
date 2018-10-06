@@ -1,7 +1,8 @@
 <template>
     <transition name="v-exp-context-menu-fade">
         <div v-if="show" class="v-exp-context-menu" :style="{top: top + 'px', left: left + 'px'}">
-            <div v-for="opt in options" :key="opt.name" class="v-exp-context-menu-option" @click.stop="click($event, opt)" v-if="opt.visible(file)">
+            <div v-for="opt in options" v-if="opt.visible(file)" ref="opt" :key="opt.name" 
+				class="v-exp-context-menu-option" :style="{fontSize: fontSize(opt.name) + 'px'}" @click.stop="click($event, opt)">
                 {{opt.name}}
             </div>
         </div>
@@ -32,11 +33,15 @@ export default {
         }
     },
     mounted(){
-        this.addListeners();
+        this.addListeners();		
     },
     methods: {
         click(e, opt) {
-            opt.click(this.file);
+			if(!this.file.blank) {
+				opt.click(this.file);
+			} else {
+				opt.click(null);
+			}            
             this.hide();
         },
         hideAllContextMenu() {
@@ -57,12 +62,26 @@ export default {
         },
         hide() {
             this.$emit('update:show', false);
-        }
+        },
+		fontSize(name) {
+			//let size = 
+			/*if(name.length < 13) {
+				return 
+			}*/
+		}
     },
     watch: {
         show(val) {
             if(val){
                 this.hideAllContextMenu();
+				this.$nextTick(() => {//resize font to fit in the div's default height
+					let defaultFontSize = 13;
+					this.$refs.opt.forEach(el => {
+						while(el.clientHeight > 30) {
+							el.style.fontSize = --defaultFontSize + 'px';
+						}
+					});					
+				});				
             }
         }
     }
@@ -71,32 +90,29 @@ export default {
 </script>
 <style lang="stylus">
     .v-exp-context-menu {
-        width 120px
-        min-height 150px
-        position fixed
-        background-color white
+		min-width: 110px
+        max-width: 130px		
+        min-height: 150px
+        position: fixed
+        background-color: white
         opacity: .98
-        z-index 10000
-        border 1px solid gray
-        box-shadow: 5px 4px 15px -4px rgba(0,0,0,0.75);
+        z-index: 10000
+        border: 1px solid gray
+        box-shadow: 5px 4px 15px -4px rgba(0,0,0,0.75)
     }
 
     .v-exp-context-menu-option {
-        text-transform uppercase
-        height 20px
-        cursor pointer
-        padding 5px 10px
-        overflow hidden
-        a {
-            text-decoration none
-            color gray 
-            font-weight bold 
-        }
-        span {
-        }
+        text-transform: uppercase
+        min-height: 20px
+        cursor: pointer
+        padding: 5px 10px
+        overflow: hidden
+		color: gray 
+		font-size: 13px
+		font-family: Verdana, Georgia, Palatino
         &:hover {
-            color white
-            background-color gray
+            color: white
+            background-color: gray
         }
     }
 

@@ -5,13 +5,13 @@
         @contextmenu.prevent="contextmenu" @click.stop="click">
 
         <!-- <fa-icon :icon="file.icon"></fa-icon> -->
-        <fa-icon :icon="['far', file.icon]" v-if="!file.blank" size="3x" class="v-file-icon"></fa-icon>
+        <fa-icon v-if="!file.blank" :icon="['far', file.icon]" size="3x" class="v-file-icon"></fa-icon>
         <p :title="file.name">{{_fileName}}</p>
         <!-- when hovering a file/field -->
         <div class="v-exp-file-hover" :class="{'v-exp-file-hover-enabled': draggingover}"></div>
          <!-- when selecting a file -->
         <div class="v-exp-file-selected" :class="{'v-exp-file-selected-enabled': selected}"></div>
-        <v-context-menu v-if="!file.blank" :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft"></v-context-menu>
+        <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft"></v-context-menu>
     </div>
 </template>
 <script>
@@ -71,8 +71,8 @@ export default {
             if (!this.file.blank) {
                 this.selected = true;
                 file = this.file;
+				this.$emit('contextmenu', file);
             }
-            this.$emit('contextmenu', file);
             this.contextMenuTop = e.clientY;
             this.contextMenuLeft = e.clientX;
             this.showContextMenu = true;
@@ -81,10 +81,10 @@ export default {
             if (!this.file.blank) {
                 this.selected = true;
                 e.file = this.file;
+				this.$emit('click', e);
             }else{
                 document.dispatchEvent(new Event("click"));
-            }
-            this.$emit('click', e);
+            }            
         },
         addListeners() {
             document.addEventListener("click", () => {
@@ -118,13 +118,15 @@ export default {
     .v-exp-file {
         @extends .v-exp-block
         border 1px solid gray
-        box-shadow: 5px 5px 25px -5px rgba(0,0,0,1);
+        box-shadow: 5px 5px 25px -5px rgba(0,0,0,1)
+		transition: left 5s, top 5s, position 5s;
         p {
             position: relative;
             z-index: 20;
             top: 30px;
             text-align: center;
-            font-size: small;
+            font-size: 12px;
+			font-family: Verdana, Georgia, Palatino;
         }
     }
 

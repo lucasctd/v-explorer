@@ -11,13 +11,18 @@
         <div class="v-exp-file-hover" :class="{'v-exp-file-hover-enabled': draggingover}"></div>
          <!-- when selecting a file -->
         <div class="v-exp-file-selected" :class="{'v-exp-file-selected-enabled': selected}"></div>
+        <transition name="fade">
+            <div v-if="file.uploading" class="v-exp-file-uploading" :style="{height: file.progress + '%'}">
+                <span :style="file.progress < 20 ? 'margin: -24px auto; color: #191970;': ''">{{file.progress}}%</span>
+            </div>
+        </transition>
         <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft"></v-context-menu>
     </div>
 </template>
 <script>
 import ContextMenu from './ContextMenu.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import {library} from '@fortawesome/fontawesome-svg-core'
 import {far} from '@fortawesome/free-regular-svg-icons'
 
 library.add(far)
@@ -78,7 +83,7 @@ export default {
             this.showContextMenu = true;
         },
         click(e) {
-            if (!this.file.blank) {
+            if (!this.file.blank && !this.file.uploading) {
                 this.selected = true;
                 e.file = this.file;
 				this.$emit('click', e);
@@ -100,6 +105,18 @@ export default {
             return this.file.name;
         }
     },
+    watch: {
+        file: {
+            handler(file) {
+                if(file.progress >= 100) {
+                    setTimeout(() => {
+                        file.uploading = false;
+                    }, 3000);
+                } 
+            },
+            deep: true
+        }
+    },
     components: {
         'v-context-menu': ContextMenu,
         'fa-icon': FontAwesomeIcon
@@ -107,7 +124,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-
+    $blue = #191970
     .v-exp-block {
         width 100px
         height 135px
@@ -119,7 +136,7 @@ export default {
         @extends .v-exp-block
         border 1px solid gray
         box-shadow: 5px 5px 25px -5px rgba(0,0,0,1)
-		transition: left 5s, top 5s, position 5s;
+		transition: all .1s ease-out;
         p {
             position: relative;
             z-index: 20;
@@ -145,14 +162,14 @@ export default {
         display block
         opacity 0        
         background-color orange
-        transition: opacity 1s;
+        transition: opacity .7s;
         position absolute
         top 0px
         z-index 10
     }
 
     .v-exp-file-selected {
-        background-color blue
+        background-color $blue
         @extends .v-exp-file-hover
     }
 
@@ -165,10 +182,35 @@ export default {
     }
 
     .v-file-icon {
-        margin: 0 auto;
-        position: relative;
-        display: table;
-        top: 15px;
+        margin: 0 auto
+        position: relative
+        display: table
+        top: 15px
+    }
+
+    .v-exp-file-uploading {
+        width 100%
+        position absolute
+        bottom 0
+        background-color $blue
+        opacity .8
+        transition height .7s
+        z-index 10
+        span {
+            font-size 24px
+            color white
+            font-weight bold
+            display table
+            margin 0 auto
+            transition margin 1s
+        }
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 </style>
 

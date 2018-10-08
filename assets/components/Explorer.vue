@@ -1,9 +1,12 @@
 
 <template>
     <div class="container">
-         <v-file v-for="file in _files" :file="file" :key="file.id" @drop="updateFiles"
-            @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" @contextmenu="contextmenu">
-        </v-file>
+        <transition-group name="list-complete" tag="div">
+            <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
+                @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
+                @contextmenu="contextmenu">
+            </v-file>
+        </transition-group>
     </div>
 </template>
 <script>
@@ -15,7 +18,8 @@ export default {
     data() {
         return {
             draggedFile: null,
-            selectedFiles: []
+            selectedFiles: [],
+            localFiles: []
         }
     },
     props: {
@@ -30,38 +34,34 @@ export default {
     },
     mounted() {
         this.addListeners();
+        this.loadLocalFiles();
     },
-    computed: {
-        _files() {
+    methods: {
+        loadLocalFiles() {
             let listFiles = [];
-            const max = Math.max.apply(null, this.files.map(f => f.index));
+            //create blank 'files'
             for (let x = 0; x <= this.getNumberOfBlocks(); x++){
                 listFiles.push(generateBlankFile(x));
             }
+            //add the real files to the list
             this.files.forEach(file => {
                 listFiles.splice(file.index, 1, file);
             });
-            return listFiles;
-        }
-    },
-    methods: {
+            this.localFiles = listFiles;
+        },
         updateFiles(file) {
-			const that = this;
-			if(!file.blank) {
-				let draggedEl = document.getElementById(that.draggedFile.id);
-				let fileEl = document.getElementById(file.id);
-				console.log(draggedEl.offsetTop);
-				console.log(draggedEl.offsetLeft);
-				console.log(that.draggedFile);
-				fileEl.style.position = 'absolute';
-				fileEl.style.left = draggedEl.offsetLeft + 'px';
-				fileEl.style.top = draggedEl.offsetTop + 'px';
-			}
-			/*setTimeout(() => {
-				let tempIndex = that.draggedFile.index;
-				that.draggedFile.index = file.index;
-				file.index = tempIndex;
-			}, 3000);*/
+            let listFiles = [];
+            const destFileIndex = file.index;
+            const draggedFileIndex = this.draggedFile.index;
+
+            listFiles = listFiles.concat(this.localFiles);
+            listFiles[destFileIndex].index = draggedFileIndex;
+            listFiles[draggedFileIndex].index = destFileIndex;
+
+            listFiles.splice(destFileIndex, 1, this.draggedFile);
+            listFiles.splice(draggedFileIndex, 1, file);
+            this.localFiles = listFiles;
+            this.$emit('update:files', listFiles)
         },
         dragstart(file) {
             this.draggedFile = file;
@@ -74,7 +74,7 @@ export default {
             return totalArea / blockSize;
         },
         click(e){
-            this.addFile(e.file);
+            this.addSelectedFile(e.file);
         },
         addListeners() {
             document.addEventListener("click", () => {
@@ -82,10 +82,10 @@ export default {
             });
         },
         contextmenu(file) {
-            this.addFile(file);
+            this.addSelectedFile(file);
             this.$emit('contextmenu', this.selectedFiles);
         },
-        addFile(file) {
+        addSelectedFile(file) {
             if (file) {
                 const rs = this.selectedFiles.find(f => {
                     return f.id === file.id;
@@ -110,8 +110,27 @@ export default {
     .container {
         width: 100%
         height: 100%
-		display: flex
-		flex-wrap: wrap
+        > div {
+            display: flex
+		    flex-wrap: wrap
+            width inherit
+            height inherit
+        }
+    }
+
+    .list-complete-item {
+        transition: all 1s;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .list-complete-enter, .list-complete-leave-to {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .list-complete-leave-active {
+        position: absolute;
     }
 </style>
 

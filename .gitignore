@@ -1,7 +1,5 @@
 node_modules
 .vscode
 hot
-
-mix-manifest\.json
-
-yarn\.lock
+mix-manifest.json
+yarn.lock

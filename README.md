@@ -1,2 +1,2 @@
 # v-explorer
-Explorer files with Vue
+A "file" explorer component for Vue.

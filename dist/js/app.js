@@ -2472,6 +2472,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var File = function File(id, name, index) {
     var icon = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "file";
     var blank = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var uploading = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+    var progress = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
 
     _classCallCheck(this, File);
 
@@ -2480,6 +2482,8 @@ var File = function File(id, name, index) {
     this.index = index;
     this.icon = icon;
     this.blank = blank;
+    this.uploading = uploading;
+    this.progress = progress;
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (File);
@@ -2542,7 +2546,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('v-explorer', __WEBPACK_IM
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     data: {
-        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 2), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4)],
+        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0, 'file', false, true), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 2, 'file', false, true, 80), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4)],
         options: [new __WEBPACK_IMPORTED_MODULE_3__option__["a" /* default */]('Delete', function (e) {
             console.log("Delete");
             console.log(e);
@@ -2563,6 +2567,18 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             return file.blank;
         })]
     },
+    mounted: function mounted() {
+        var that = this;
+        var x = 0;
+        var interval = setInterval(function () {
+            x += 5;
+            that.files[0].progress = x;
+            if (x >= 100) {
+                clearInterval(interval);
+            }
+        }, 1000);
+    },
+
     methods: {
         contextmenu: function contextmenu(e) {}
     }
@@ -14073,7 +14089,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.container {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-wrap: wrap;\n}\n", ""]);
+exports.push([module.i, "\n.container {\n  width: 100%;\n  height: 100%;\n}\n.container > div {\n  display: flex;\n  flex-wrap: wrap;\n  width: inherit;\n  height: inherit;\n}\n.list-complete-item {\n  transition: all 1s;\n  display: inline-block;\n  margin-right: 10px;\n}\n.list-complete-enter,\n.list-complete-leave-to {\n  opacity: 0;\n  transform: translateY(30px);\n}\n.list-complete-leave-active {\n  position: absolute;\n}\n", ""]);
 
 // exports
 
@@ -14128,6 +14144,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -14137,7 +14156,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             draggedFile: null,
-            selectedFiles: []
+            selectedFiles: [],
+            localFiles: []
         };
     },
 
@@ -14153,41 +14173,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.addListeners();
+        this.loadLocalFiles();
     },
 
-    computed: {
-        _files: function _files() {
+    methods: {
+        loadLocalFiles: function loadLocalFiles() {
             var listFiles = [];
-            var max = Math.max.apply(null, this.files.map(function (f) {
-                return f.index;
-            }));
+            //create blank 'files'
             for (var x = 0; x <= this.getNumberOfBlocks(); x++) {
                 listFiles.push(Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(x));
             }
+            //add the real files to the list
             this.files.forEach(function (file) {
                 listFiles.splice(file.index, 1, file);
             });
-            return listFiles;
-        }
-    },
-    methods: {
+            this.localFiles = listFiles;
+        },
         updateFiles: function updateFiles(file) {
-            var that = this;
-            if (!file.blank) {
-                var draggedEl = document.getElementById(that.draggedFile.id);
-                var fileEl = document.getElementById(file.id);
-                console.log(draggedEl.offsetTop);
-                console.log(draggedEl.offsetLeft);
-                console.log(that.draggedFile);
-                fileEl.style.position = 'absolute';
-                fileEl.style.left = draggedEl.offsetLeft + 'px';
-                fileEl.style.top = draggedEl.offsetTop + 'px';
-            }
-            /*setTimeout(() => {
-            	let tempIndex = that.draggedFile.index;
-            	that.draggedFile.index = file.index;
-            	file.index = tempIndex;
-            }, 3000);*/
+            var listFiles = [];
+            var destFileIndex = file.index;
+            var draggedFileIndex = this.draggedFile.index;
+
+            listFiles = listFiles.concat(this.localFiles);
+            listFiles[destFileIndex].index = draggedFileIndex;
+            listFiles[draggedFileIndex].index = destFileIndex;
+
+            listFiles.splice(destFileIndex, 1, this.draggedFile);
+            listFiles.splice(draggedFileIndex, 1, file);
+            this.localFiles = listFiles;
+            this.$emit('update:files', listFiles);
         },
         dragstart: function dragstart(file) {
             this.draggedFile = file;
@@ -14199,7 +14213,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return totalArea / blockSize;
         },
         click: function click(e) {
-            this.addFile(e.file);
+            this.addSelectedFile(e.file);
         },
         addListeners: function addListeners() {
             var _this = this;
@@ -14209,10 +14223,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         contextmenu: function contextmenu(file) {
-            this.addFile(file);
+            this.addSelectedFile(file);
             this.$emit('contextmenu', this.selectedFiles);
         },
-        addFile: function addFile(file) {
+        addSelectedFile: function addSelectedFile(file) {
             if (file) {
                 var rs = this.selectedFiles.find(function (f) {
                     return f.id === file.id;
@@ -14319,7 +14333,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: left 5s, top 5s, position 5s;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 1s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #00f;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n", ""]);
+exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.1s ease-out;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n.v-exp-file-uploading {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.8;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.fade-enter-active,\n.fade-leave-active {\n  transition: opacity 0.5s;\n}\n.fade-enter,\n.fade-leave-to {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -14336,6 +14350,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fortawesome_free_regular_svg_icons__ = __webpack_require__(27);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -14417,7 +14436,7 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
             this.showContextMenu = true;
         },
         click: function click(e) {
-            if (!this.file.blank) {
+            if (!this.file.blank && !this.file.uploading) {
                 this.selected = true;
                 e.file = this.file;
                 this.$emit('click', e);
@@ -14439,6 +14458,19 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
                 return this.file.name.substring(0, 13).trim().concat('...');
             }
             return this.file.name;
+        }
+    },
+    watch: {
+        file: {
+            handler: function handler(file) {
+                if (file.progress >= 100) {
+                    setTimeout(function () {
+                        file.uploading = false;
+                    }, 3000);
+                }
+            },
+
+            deep: true
         }
     },
     components: {
@@ -15749,6 +15781,30 @@ var render = function() {
         class: { "v-exp-file-selected-enabled": _vm.selected }
       }),
       _vm._v(" "),
+      _c("transition", { attrs: { name: "fade" } }, [
+        _vm.file.uploading
+          ? _c(
+              "div",
+              {
+                staticClass: "v-exp-file-uploading",
+                style: { height: _vm.file.progress + "%" }
+              },
+              [
+                _c(
+                  "span",
+                  {
+                    style:
+                      _vm.file.progress < 20
+                        ? "margin: -24px auto; color: #191970;"
+                        : ""
+                  },
+                  [_vm._v(_vm._s(_vm.file.progress) + "%")]
+                )
+              ]
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
       _c("v-context-menu", {
         attrs: {
           show: _vm.showContextMenu,
@@ -15788,22 +15844,29 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "container" },
-    _vm._l(_vm._files, function(file) {
-      return _c("v-file", {
-        key: file.id,
-        attrs: { file: file, options: _vm.options },
-        on: {
-          drop: _vm.updateFiles,
-          dragstart: _vm.dragstart,
-          dragend: _vm.dragend,
-          click: function($event) {
-            $event.stopPropagation()
-            return _vm.click($event)
-          },
-          contextmenu: _vm.contextmenu
-        }
-      })
-    })
+    [
+      _c(
+        "transition-group",
+        { attrs: { name: "list-complete", tag: "div" } },
+        _vm._l(_vm.localFiles, function(file) {
+          return _c("v-file", {
+            key: file.id,
+            attrs: { file: file, options: _vm.options },
+            on: {
+              drop: _vm.updateFiles,
+              dragstart: _vm.dragstart,
+              dragend: _vm.dragend,
+              click: function($event) {
+                $event.stopPropagation()
+                return _vm.click($event)
+              },
+              contextmenu: _vm.contextmenu
+            }
+          })
+        })
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = []

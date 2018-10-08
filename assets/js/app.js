@@ -9,8 +9,8 @@ new Vue({
     el: '#app',
     data: {
         files: [
-            new File(1, "File 1 wqewq weqeq www", 0),
-            new File(2, "File 2 qwew eeeee", 2),
+            new File(1, "File 1 wqewq weqeq www", 0, 'file', false, true),
+            new File(2, "File 2 qwew eeeee", 2, 'file', false, true, 80),
             new File(3, "File 3", 4)
         ],
         options: [
@@ -37,6 +37,17 @@ new Vue({
                 return file.blank;
             })
         ]
+    },
+    mounted() {
+        const that = this;
+        let x = 0;
+        let interval = setInterval(() => {
+            x+=5;
+            that.files[0].progress = x;
+            if(x >= 100) {
+                clearInterval(interval);
+            }
+        }, 1000);
     },
     methods: {
         contextmenu(e) {

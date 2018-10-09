@@ -41,9 +41,11 @@ new Vue({
     mounted() {
         const that = this;
         let x = 0;
+        const file = this.files[1];
+        //console.log(file);
         let interval = setInterval(() => {
             x+=5;
-            that.files[0].progress = x;
+            file.progress = x;
             if(x >= 100) {
                 clearInterval(interval);
             }

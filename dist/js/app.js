@@ -2570,9 +2570,11 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     mounted: function mounted() {
         var that = this;
         var x = 0;
+        var file = this.files[1];
+        //console.log(file);
         var interval = setInterval(function () {
             x += 5;
-            that.files[0].progress = x;
+            file.progress = x;
             if (x >= 100) {
                 clearInterval(interval);
             }
@@ -14240,6 +14242,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         clearFileList: function clearFileList() {
             this.selectedFiles = [];
+        },
+        uploadCanceled: function uploadCanceled(file) {
+            //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
+            this.localFiles[file.index].blank = true;
+            console.log(file);
         }
     },
     components: {
@@ -14333,7 +14340,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.1s ease-out;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n.v-exp-file-uploading {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.8;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.fade-enter-active,\n.fade-leave-active {\n  transition: opacity 0.5s;\n}\n.fade-enter,\n.fade-leave-to {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.1s ease-out;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n.v-exp-file-uploading {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.fade-enter-active,\n.fade-leave-active {\n  transition: opacity 0.5s;\n}\n.fade-enter,\n.fade-leave-to {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -14371,6 +14378,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -14385,6 +14399,7 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
             dragging: false,
             draggingover: false,
             showContextMenu: false,
+            showCancelMessage: false,
             contextMenuTop: 0,
             contextMenuLeft: 0,
             selected: false
@@ -14425,15 +14440,13 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
         },
         dragover: function dragover() {},
         contextmenu: function contextmenu(e) {
-            var file = null;
-            if (!this.file.blank) {
+            if (!this.file.blank && !this.file.uploading) {
                 this.selected = true;
-                file = this.file;
-                this.$emit('contextmenu', file);
+                this.$emit('contextmenu', this.file);
             }
             this.contextMenuTop = e.clientY;
             this.contextMenuLeft = e.clientX;
-            this.showContextMenu = true;
+            this.showContextMenu = !this.file.uploading;
         },
         click: function click(e) {
             if (!this.file.blank && !this.file.uploading) {
@@ -14450,6 +14463,10 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
             document.addEventListener("click", function () {
                 _this.selected = false;
             });
+        },
+        cancelUpload: function cancelUpload() {
+            this.file.uploading = false;
+            this.$emit('uploadCanceled', this.file);
         }
     },
     computed: {
@@ -15756,6 +15773,12 @@ var render = function() {
         click: function($event) {
           $event.stopPropagation()
           return _vm.click($event)
+        },
+        mouseenter: function($event) {
+          _vm.showCancelMessage = true
+        },
+        mouseleave: function($event) {
+          _vm.showCancelMessage = false
         }
       }
     },
@@ -15767,9 +15790,11 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      _c("p", { attrs: { title: _vm.file.name } }, [
-        _vm._v(_vm._s(_vm._fileName))
-      ]),
+      !_vm.file.blank
+        ? _c("p", { attrs: { title: _vm.file.name } }, [
+            _vm._v(_vm._s(_vm._fileName))
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("div", {
         staticClass: "v-exp-file-hover",
@@ -15801,6 +15826,24 @@ var render = function() {
                   [_vm._v(_vm._s(_vm.file.progress) + "%")]
                 )
               ]
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "fade" } }, [
+        _vm.file.uploading && _vm.showCancelMessage
+          ? _c(
+              "div",
+              {
+                staticClass: "v-exp-file-abort-uploading",
+                on: {
+                  click: function($event) {
+                    $event.stopPropagation()
+                    return _vm.cancelUpload($event)
+                  }
+                }
+              },
+              [_vm._v("\n            Cancel?\n        ")]
             )
           : _vm._e()
       ]),
@@ -15860,7 +15903,8 @@ var render = function() {
                 $event.stopPropagation()
                 return _vm.click($event)
               },
-              contextmenu: _vm.contextmenu
+              contextmenu: _vm.contextmenu,
+              uploadCanceled: _vm.uploadCanceled
             }
           })
         })

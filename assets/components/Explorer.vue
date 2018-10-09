@@ -4,7 +4,7 @@
         <transition-group name="list-complete" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
-                @contextmenu="contextmenu">
+                @contextmenu="contextmenu" @uploadCanceled="uploadCanceled">
             </v-file>
         </transition-group>
     </div>
@@ -99,6 +99,11 @@ export default {
         },
         clearFileList() {
             this.selectedFiles = [];
+        },
+        uploadCanceled(file) {
+            //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
+            this.localFiles[file.index].blank = true;
+            console.log(file);
         }
     },
     components: {

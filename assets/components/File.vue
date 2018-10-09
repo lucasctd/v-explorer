@@ -2,18 +2,25 @@
 <template>
     <div :id="file.id" :class="{'v-exp-file': !file.blank, 'v-exp-blank': file.blank, 'v-exp-file-dragging': dragging}" draggable="true" 
         @drop.prevent="drop" @dragstart="dragstart" @dragend="dragend" @dragenter.prevent="dragenter" @dragleave="dragleave" @dragover.prevent="dragover"
-        @contextmenu.prevent="contextmenu" @click.stop="click">
+        @contextmenu.prevent="contextmenu" @click.stop="click" @mouseenter="showCancelMessage = true" @mouseleave="showCancelMessage = false">
 
         <!-- <fa-icon :icon="file.icon"></fa-icon> -->
         <fa-icon v-if="!file.blank" :icon="['far', file.icon]" size="3x" class="v-file-icon"></fa-icon>
-        <p :title="file.name">{{_fileName}}</p>
+        <p v-if="!file.blank" :title="file.name">{{_fileName}}</p>
         <!-- when hovering a file/field -->
         <div class="v-exp-file-hover" :class="{'v-exp-file-hover-enabled': draggingover}"></div>
          <!-- when selecting a file -->
         <div class="v-exp-file-selected" :class="{'v-exp-file-selected-enabled': selected}"></div>
+        <!-- when uploading a file -->
         <transition name="fade">
             <div v-if="file.uploading" class="v-exp-file-uploading" :style="{height: file.progress + '%'}">
                 <span :style="file.progress < 20 ? 'margin: -24px auto; color: #191970;': ''">{{file.progress}}%</span>
+            </div>
+        </transition>
+        <!-- when mouse hovering a file -->
+        <transition name="fade">
+            <div v-if="file.uploading && showCancelMessage" class="v-exp-file-abort-uploading" @click.stop="cancelUpload">
+                Cancel?
             </div>
         </transition>
         <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft"></v-context-menu>
@@ -33,6 +40,7 @@ export default {
             dragging: false,
             draggingover: false,
             showContextMenu: false,
+            showCancelMessage: false,
             contextMenuTop: 0,
             contextMenuLeft: 0,
             selected: false
@@ -72,15 +80,13 @@ export default {
         dragover() {
         },
         contextmenu(e) {
-            let file = null;
-            if (!this.file.blank) {
+            if (!this.file.blank && !this.file.uploading) {
                 this.selected = true;
-                file = this.file;
-				this.$emit('contextmenu', file);
+				this.$emit('contextmenu', this.file);
             }
             this.contextMenuTop = e.clientY;
             this.contextMenuLeft = e.clientX;
-            this.showContextMenu = true;
+            this.showContextMenu = !this.file.uploading;
         },
         click(e) {
             if (!this.file.blank && !this.file.uploading) {
@@ -95,6 +101,10 @@ export default {
             document.addEventListener("click", () => {
                 this.selected = false;
             });
+        },
+        cancelUpload() {
+            this.file.uploading = false;
+            this.$emit('uploadCanceled', this.file);
         }
     },
     computed: {
@@ -125,9 +135,13 @@ export default {
 </script>
 <style lang="stylus">
     $blue = #191970
+    $red = #FF3030
+    $block_height = 135px
+    $block_width = 100px
+
     .v-exp-block {
-        width 100px
-        height 135px
+        width $block_width
+        height $block_height
         margin 10px 5px
         position relative
     }
@@ -193,7 +207,7 @@ export default {
         position absolute
         bottom 0
         background-color $blue
-        opacity .8
+        opacity .7
         transition height .7s
         z-index 10
         span {
@@ -206,9 +220,27 @@ export default {
         }
     }
 
+    .v-exp-file-abort-uploading {
+        width 100%
+        height 100%
+        bottom 0
+        position absolute
+        cursor pointer
+        background-color $red
+
+        z-index 12
+        opacity .75
+
+        font-weight bold
+        color white
+        text-align center
+        line-height $block_height
+    }
+
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
     }
+
     .fade-enter, .fade-leave-to {
         opacity: 0;
     }

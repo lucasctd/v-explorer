@@ -53,6 +53,10 @@ new Vue({
     },
     methods: {
         contextmenu(e) {
+        },
+        uploadCanceled(file) {
+            console.error('uploadCanceled');
+            console.warn(file);
         }
     }
 });

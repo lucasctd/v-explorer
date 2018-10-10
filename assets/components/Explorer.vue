@@ -1,7 +1,7 @@
 
 <template>
     <div class="container">
-        <transition-group name="list-complete" tag="div">
+        <transition-group name="list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
                 @contextmenu="contextmenu" @uploadCanceled="uploadCanceled">
@@ -101,9 +101,8 @@ export default {
             this.selectedFiles = [];
         },
         uploadCanceled(file) {
-            //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
             this.localFiles[file.index].blank = true;
-            console.log(file);
+            this.$emit('upload-canceled', file);
         }
     },
     components: {
@@ -111,7 +110,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     .container {
         width: 100%
         height: 100%
@@ -123,18 +122,12 @@ export default {
         }
     }
 
-    .list-complete-item {
-        transition: all 1s;
-        display: inline-block;
-        margin-right: 10px;
-    }
-
-    .list-complete-enter, .list-complete-leave-to {
+    .list-enter, .list-leave-to {
         opacity: 0;
         transform: translateY(30px);
     }
 
-    .list-complete-leave-active {
+    .list-leave-active {
         position: absolute;
     }
 </style>

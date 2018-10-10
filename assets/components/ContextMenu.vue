@@ -2,7 +2,7 @@
     <transition name="v-exp-context-menu-fade">
         <div v-if="show" class="v-exp-context-menu" :style="{top: top + 'px', left: left + 'px'}">
             <div v-for="opt in options" v-if="opt.visible(file)" ref="opt" :key="opt.name" 
-				class="v-exp-context-menu-option" :style="{fontSize: fontSize(opt.name) + 'px'}" @click.stop="click($event, opt)">
+				class="v-exp-context-menu-option" @click.stop="click($event, opt)">
                 {{opt.name}}
             </div>
         </div>
@@ -62,13 +62,7 @@ export default {
         },
         hide() {
             this.$emit('update:show', false);
-        },
-		fontSize(name) {
-			//let size = 
-			/*if(name.length < 13) {
-				return 
-			}*/
-		}
+        }
     },
     watch: {
         show(val) {
@@ -88,7 +82,8 @@ export default {
 }
 
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
+    $blue = #191970 
     .v-exp-context-menu {
 		min-width: 110px
         max-width: 130px		
@@ -107,12 +102,14 @@ export default {
         cursor: pointer
         padding: 5px 10px
         overflow: hidden
-		color: gray 
+		color: $blue 
 		font-size: 13px
 		font-family: Verdana, Georgia, Palatino
+        font-weight bold
         &:hover {
             color: white
-            background-color: gray
+            background-color: $blue
+            opacity .75
         }
     }
 

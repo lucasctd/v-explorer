@@ -2582,7 +2582,11 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
 
     methods: {
-        contextmenu: function contextmenu(e) {}
+        contextmenu: function contextmenu(e) {},
+        uploadCanceled: function uploadCanceled(file) {
+            console.error('uploadCanceled');
+            console.warn(file);
+        }
     }
 });
 
@@ -14012,19 +14016,19 @@ process.umask = function() { return 0; };
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(13)
+  __webpack_require__(31)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(16)
 /* template */
-var __vue_template__ = __webpack_require__(29)
+var __vue_template__ = __webpack_require__(33)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-d6b64e8c"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -14057,46 +14061,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(14);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("970a3266", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d6b64e8c\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Explorer.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d6b64e8c\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Explorer.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.container {\n  width: 100%;\n  height: 100%;\n}\n.container > div {\n  display: flex;\n  flex-wrap: wrap;\n  width: inherit;\n  height: inherit;\n}\n.list-complete-item {\n  transition: all 1s;\n  display: inline-block;\n  margin-right: 10px;\n}\n.list-complete-enter,\n.list-complete-leave-to {\n  opacity: 0;\n  transform: translateY(30px);\n}\n.list-complete-leave-active {\n  position: absolute;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 13 */,
+/* 14 */,
 /* 15 */
 /***/ (function(module, exports) {
 
@@ -14244,9 +14210,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.selectedFiles = [];
         },
         uploadCanceled: function uploadCanceled(file) {
-            //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
             this.localFiles[file.index].blank = true;
-            console.log(file);
+            this.$emit('upload-canceled', file);
         }
     },
     components: {
@@ -14261,19 +14226,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(18)
+  __webpack_require__(37)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(20)
 /* template */
-var __vue_template__ = __webpack_require__(28)
+var __vue_template__ = __webpack_require__(39)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-205ab8f7"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -14306,46 +14271,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(19);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("52131c9e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-205ab8f7\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./File.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-205ab8f7\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./File.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.v-exp-block,\n.v-exp-file,\n.v-exp-blank {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.1s ease-out;\n}\n.v-exp-file p {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank {\n  border: none;\n}\n.v-exp-file-dragging {\n  transform: translateX(-3500px);\n}\n.v-exp-file-hover,\n.v-exp-file-selected {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled {\n  opacity: 0.2;\n}\n.v-file-icon {\n  margin: 0 auto;\n  position: relative;\n  display: table;\n  top: 15px;\n}\n.v-exp-file-uploading {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.fade-enter-active,\n.fade-leave-active {\n  transition: opacity 0.5s;\n}\n.fade-enter,\n.fade-leave-to {\n  opacity: 0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 18 */,
+/* 19 */,
 /* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14396,7 +14323,6 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            dragging: false,
             draggingover: false,
             showContextMenu: false,
             showCancelMessage: false,
@@ -14430,12 +14356,11 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
             this.draggingover = false;
             this.$emit('drop', this.file);
         },
-        dragstart: function dragstart() {
-            this.dragging = true;
+        dragstart: function dragstart(e) {
+            e.dataTransfer.setData('application/json', this.file); //required to work in Firefox
             this.$emit('dragstart', this.file);
         },
         dragend: function dragend() {
-            this.dragging = false;
             this.$emit('dragend', this.file);
         },
         dragover: function dragover() {},
@@ -14503,19 +14428,19 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(_
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(22)
+  __webpack_require__(34)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(24)
 /* template */
-var __vue_template__ = __webpack_require__(25)
+var __vue_template__ = __webpack_require__(36)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-7c5e5703"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -14548,46 +14473,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(23);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("2e8c7c5c", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c5e5703\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContextMenu.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c5e5703\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContextMenu.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.v-exp-context-menu {\n  min-width: 110px;\n  max-width: 130px;\n  min-height: 150px;\n  position: fixed;\n  background-color: #fff;\n  opacity: 0.98;\n  z-index: 10000;\n  border: 1px solid #808080;\n  box-shadow: 5px 4px 15px -4px rgba(0,0,0,0.75);\n}\n.v-exp-context-menu-option {\n  text-transform: uppercase;\n  min-height: 20px;\n  cursor: pointer;\n  padding: 5px 10px;\n  overflow: hidden;\n  color: #808080;\n  font-size: 13px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-context-menu-option:hover {\n  color: #fff;\n  background-color: #808080;\n}\n.v-exp-context-menu-fade-enter-active,\n.v-exp-context-menu-fade-leave-active {\n  transition: opacity 0.5s;\n}\n.v-exp-context-menu-fade-enter,\n.v-exp-context-menu-fade-leave-to {\n  opacity: 0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 22 */,
+/* 23 */,
 /* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14658,12 +14545,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         hide: function hide() {
             this.$emit('update:show', false);
-        },
-        fontSize: function fontSize(name) {
-            //let size = 
-            /*if(name.length < 13) {
-            	return 
-            }*/
         }
     },
     watch: {
@@ -14687,61 +14568,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "v-exp-context-menu-fade" } }, [
-    _vm.show
-      ? _c(
-          "div",
-          {
-            staticClass: "v-exp-context-menu",
-            style: { top: _vm.top + "px", left: _vm.left + "px" }
-          },
-          _vm._l(_vm.options, function(opt) {
-            return opt.visible(_vm.file)
-              ? _c(
-                  "div",
-                  {
-                    key: opt.name,
-                    ref: "opt",
-                    refInFor: true,
-                    staticClass: "v-exp-context-menu-option",
-                    style: { fontSize: _vm.fontSize(opt.name) + "px" },
-                    on: {
-                      click: function($event) {
-                        $event.stopPropagation()
-                        _vm.click($event, opt)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                " + _vm._s(opt.name) + "\n            "
-                    )
-                  ]
-                )
-              : _vm._e()
-          })
-        )
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7c5e5703", module.exports)
-  }
-}
-
-/***/ }),
+/* 25 */,
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15734,7 +15561,258 @@ var _iconsCache = {
 
 
 /***/ }),
-/* 28 */
+/* 28 */,
+/* 29 */,
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var visibleFunc = function visibleFunc(file) {
+    return true;
+};
+
+/**
+ * Option class
+ * @author Lucas Reis <lucas@programmer.com.br>
+ */
+
+var Option = function Option(name, click) {
+    var visible = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : visibleFunc;
+
+    _classCallCheck(this, Option);
+
+    this.name = name;
+    this.click = click;
+    this.visible = visible;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Option);
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(32);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("5f2cd372", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d6b64e8c\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Explorer.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d6b64e8c\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Explorer.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.container[data-v-d6b64e8c] {\n  width: 100%;\n  height: 100%;\n}\n.container > div[data-v-d6b64e8c] {\n  display: flex;\n  flex-wrap: wrap;\n  width: inherit;\n  height: inherit;\n}\n.list-enter[data-v-d6b64e8c],\n.list-leave-to[data-v-d6b64e8c] {\n  opacity: 0;\n  transform: translateY(30px);\n}\n.list-leave-active[data-v-d6b64e8c] {\n  position: absolute;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c(
+        "transition-group",
+        { attrs: { name: "list", tag: "div" } },
+        _vm._l(_vm.localFiles, function(file) {
+          return _c("v-file", {
+            key: file.id,
+            attrs: { file: file, options: _vm.options },
+            on: {
+              drop: _vm.updateFiles,
+              dragstart: _vm.dragstart,
+              dragend: _vm.dragend,
+              click: function($event) {
+                $event.stopPropagation()
+                return _vm.click($event)
+              },
+              contextmenu: _vm.contextmenu,
+              uploadCanceled: _vm.uploadCanceled
+            }
+          })
+        })
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d6b64e8c", module.exports)
+  }
+}
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(35);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("85e87a42", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c5e5703\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContextMenu.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c5e5703\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContextMenu.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.v-exp-context-menu[data-v-7c5e5703] {\n  min-width: 110px;\n  max-width: 130px;\n  min-height: 150px;\n  position: fixed;\n  background-color: #fff;\n  opacity: 0.98;\n  z-index: 10000;\n  border: 1px solid #808080;\n  box-shadow: 5px 4px 15px -4px rgba(0,0,0,0.75);\n}\n.v-exp-context-menu-option[data-v-7c5e5703] {\n  text-transform: uppercase;\n  min-height: 20px;\n  cursor: pointer;\n  padding: 5px 10px;\n  overflow: hidden;\n  color: #191970;\n  font-size: 13px;\n  font-family: Verdana, Georgia, Palatino;\n  font-weight: bold;\n}\n.v-exp-context-menu-option[data-v-7c5e5703]:hover {\n  color: #fff;\n  background-color: #191970;\n  opacity: 0.75;\n}\n.v-exp-context-menu-fade-enter-active[data-v-7c5e5703],\n.v-exp-context-menu-fade-leave-active[data-v-7c5e5703] {\n  transition: opacity 0.5s;\n}\n.v-exp-context-menu-fade-enter[data-v-7c5e5703],\n.v-exp-context-menu-fade-leave-to[data-v-7c5e5703] {\n  opacity: 0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "v-exp-context-menu-fade" } }, [
+    _vm.show
+      ? _c(
+          "div",
+          {
+            staticClass: "v-exp-context-menu",
+            style: { top: _vm.top + "px", left: _vm.left + "px" }
+          },
+          _vm._l(_vm.options, function(opt) {
+            return opt.visible(_vm.file)
+              ? _c(
+                  "div",
+                  {
+                    key: opt.name,
+                    ref: "opt",
+                    refInFor: true,
+                    staticClass: "v-exp-context-menu-option",
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        _vm.click($event, opt)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " + _vm._s(opt.name) + "\n            "
+                    )
+                  ]
+                )
+              : _vm._e()
+          })
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7c5e5703", module.exports)
+  }
+}
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(38);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("7e0f93c1", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-205ab8f7\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./File.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-205ab8f7\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./File.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.v-exp-block[data-v-205ab8f7],\n.v-exp-file[data-v-205ab8f7],\n.v-exp-blank[data-v-205ab8f7] {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file[data-v-205ab8f7] {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.6s;\n}\n.v-exp-file p[data-v-205ab8f7] {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank[data-v-205ab8f7] {\n  border: none;\n}\n.v-exp-file-hover[data-v-205ab8f7],\n.v-exp-file-selected[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected[data-v-205ab8f7] {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled[data-v-205ab8f7] {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled[data-v-205ab8f7] {\n  opacity: 0.2;\n}\n.v-file-icon[data-v-205ab8f7] {\n  margin: auto;\n  position: relative;\n  display: block;\n  top: 15px;\n}\n.v-exp-file-uploading[data-v-205ab8f7] {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span[data-v-205ab8f7] {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.fade-enter-active[data-v-205ab8f7],\n.fade-leave-active[data-v-205ab8f7] {\n  transition: opacity 0.5s;\n}\n.fade-enter[data-v-205ab8f7],\n.fade-leave-to[data-v-205ab8f7] {\n  opacity: 0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -15744,11 +15822,7 @@ var render = function() {
   return _c(
     "div",
     {
-      class: {
-        "v-exp-file": !_vm.file.blank,
-        "v-exp-blank": _vm.file.blank,
-        "v-exp-file-dragging": _vm.dragging
-      },
+      class: { "v-exp-file": !_vm.file.blank, "v-exp-blank": _vm.file.blank },
       attrs: { id: _vm.file.id, draggable: "true" },
       on: {
         drop: function($event) {
@@ -15875,81 +15949,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-205ab8f7", module.exports)
   }
 }
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _c(
-        "transition-group",
-        { attrs: { name: "list-complete", tag: "div" } },
-        _vm._l(_vm.localFiles, function(file) {
-          return _c("v-file", {
-            key: file.id,
-            attrs: { file: file, options: _vm.options },
-            on: {
-              drop: _vm.updateFiles,
-              dragstart: _vm.dragstart,
-              dragend: _vm.dragend,
-              click: function($event) {
-                $event.stopPropagation()
-                return _vm.click($event)
-              },
-              contextmenu: _vm.contextmenu,
-              uploadCanceled: _vm.uploadCanceled
-            }
-          })
-        })
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-d6b64e8c", module.exports)
-  }
-}
-
-/***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var visibleFunc = function visibleFunc(file) {
-    return true;
-};
-
-/**
- * Option class
- * @author Lucas Reis <lucas@programmer.com.br>
- */
-
-var Option = function Option(name, click) {
-    var visible = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : visibleFunc;
-
-    _classCallCheck(this, Option);
-
-    this.name = name;
-    this.click = click;
-    this.visible = visible;
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Option);
 
 /***/ })
 /******/ ]);

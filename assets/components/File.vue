@@ -1,6 +1,6 @@
 
 <template>
-    <div :id="file.id" :class="{'v-exp-file': !file.blank, 'v-exp-blank': file.blank, 'v-exp-file-dragging': dragging}" draggable="true" 
+    <div :id="file.id" :class="{'v-exp-file': !file.blank, 'v-exp-blank': file.blank}" draggable="true" 
         @drop.prevent="drop" @dragstart="dragstart" @dragend="dragend" @dragenter.prevent="dragenter" @dragleave="dragleave" @dragover.prevent="dragover"
         @contextmenu.prevent="contextmenu" @click.stop="click" @mouseenter="showCancelMessage = true" @mouseleave="showCancelMessage = false">
 
@@ -37,7 +37,6 @@ library.add(far)
 export default {
     data() {
         return {
-            dragging: false,
             draggingover: false,
             showContextMenu: false,
             showCancelMessage: false,
@@ -69,12 +68,11 @@ export default {
             this.draggingover = false
             this.$emit('drop', this.file);
         },
-        dragstart() {
-            this.dragging = true;
+        dragstart(e) {
+            e.dataTransfer.setData('application/json', this.file); //required to work in Firefox
             this.$emit('dragstart', this.file);
         },
         dragend() {
-            this.dragging = false;
             this.$emit('dragend', this.file);
         },
         dragover() {
@@ -133,7 +131,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     $blue = #191970
     $red = #FF3030
     $block_height = 135px
@@ -150,7 +148,7 @@ export default {
         @extends .v-exp-block
         border 1px solid gray
         box-shadow: 5px 5px 25px -5px rgba(0,0,0,1)
-		transition: all .1s ease-out;
+		transition: all .6s;
         p {
             position: relative;
             z-index: 20;
@@ -164,10 +162,6 @@ export default {
     .v-exp-blank {
         @extends .v-exp-block 
         border none
-    }
-
-    .v-exp-file-dragging {
-        transform translateX(-3500px)
     }
 
     .v-exp-file-hover {
@@ -196,9 +190,9 @@ export default {
     }
 
     .v-file-icon {
-        margin: 0 auto
+        margin: auto
         position: relative
-        display: table
+        display: block
         top: 15px
     }
 

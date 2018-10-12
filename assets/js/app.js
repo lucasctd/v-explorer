@@ -55,8 +55,7 @@ new Vue({
         contextmenu(e) {
         },
         uploadCanceled(file) {
-            console.error('uploadCanceled');
-            console.warn(file);
+            console.log(file);
         }
     }
 });

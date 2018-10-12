@@ -40,10 +40,5 @@
     "laravel-mix": "^2.1.11",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2"
-  },
-  "resolve": {
-    "alias": {
-      "vue": "vue.common.js"
-    }
   }
 }

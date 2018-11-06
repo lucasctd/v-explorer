@@ -19,7 +19,8 @@ export default {
         return {
             draggedFile: null,
             selectedFiles: [],
-            localFiles: []
+            localFiles: [],
+            oldFiles: []
         }
     },
     props: {
@@ -38,30 +39,25 @@ export default {
     },
     methods: {
         loadLocalFiles() {
-            let listFiles = [];
             //create blank 'files'
             for (let x = 0; x <= this.getNumberOfBlocks(); x++){
-                listFiles.push(generateBlankFile(x));
+                this.localFiles.push(generateBlankFile(x));
             }
             //add the real files to the list
             this.files.forEach(file => {
-                listFiles.splice(file.index, 1, file);
+                this.localFiles.splice(file.index, 1, file);
             });
-            this.localFiles = listFiles;
+            this.oldFiles = this.oldFiles.concat(this.files);
         },
         updateFiles(file) {
-            let listFiles = [];
             const destFileIndex = file.index;
             const draggedFileIndex = this.draggedFile.index;
 
-            listFiles = listFiles.concat(this.localFiles);
-            listFiles[destFileIndex].index = draggedFileIndex;
-            listFiles[draggedFileIndex].index = destFileIndex;
+            this.localFiles[destFileIndex].index = draggedFileIndex;
+            this.localFiles[draggedFileIndex].index = destFileIndex;
 
-            listFiles.splice(destFileIndex, 1, this.draggedFile);
-            listFiles.splice(draggedFileIndex, 1, file);
-            this.localFiles = listFiles;
-            this.$emit('update:files', listFiles)
+            this.localFiles.splice(destFileIndex, 1, this.draggedFile);
+            this.localFiles.splice(draggedFileIndex, 1, file);
         },
         dragstart(file) {
             this.draggedFile = file;
@@ -78,7 +74,7 @@ export default {
         },
         addListeners() {
             document.addEventListener("click", () => {
-                this.clearFileList();
+                this.clearSelectedFileList();
             });
         },
         contextmenu(file) {
@@ -93,20 +89,39 @@ export default {
                 if (rs === undefined) {
                     this.selectedFiles.push(file);
                 }
-            }else{
+            } else {
                 this.clearFileList();
             }
         },
-        clearFileList() {
+        clearSelectedFileList() {
             this.selectedFiles = [];
         },
         uploadCanceled(file) {
             this.localFiles[file.index].blank = true;
+            //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
             this.$emit('upload-canceled', file);
+        },
         drop(e) {
             if(e.dataTransfer.files.length > 0) {
                 this.$emit('drop', e.dataTransfer.files);
             }
+        }
+    },
+    watch: {
+        files() {
+            if (this.files.length > this.oldFiles.length) {
+                let newFiles = this.files.filter(file => this.oldFiles.indexOf(file) == -1);
+                newFiles.forEach(file => {
+                    this.localFiles.splice(file.index, 1, file);
+                });
+            } else {
+                let deletedFiles = this.oldFiles.filter(file => this.files.indexOf(file) == -1);
+                console.log(deletedFiles);
+                deletedFiles.forEach(file => {
+                    this.localFiles.splice(file.index, 1);
+                });
+            }
+            this.oldFiles = [].concat(this.files);
         }
     },
     components: {

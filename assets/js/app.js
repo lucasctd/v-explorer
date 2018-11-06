@@ -10,52 +10,43 @@ new Vue({
     data: {
         files: [
             new File(1, "File 1 wqewq weqeq www", 0, 'file', false, true),
-            new File(2, "File 2 qwew eeeee", 2, 'file', false, true, 80),
-            new File(3, "File 3", 4)
+            new File(2, "File 2 qwew eeeee", 1, 'file', false, true, 80),
+            new File(3, "File 3", 2)
         ],
-        options: [
-            new Option('Delete', (e) => {
-				console.log("Delete");
-				console.log(e);
-            }, (file) => {
-                return !file.blank;
-            }),
-            new Option('Save', (e) => {
-				console.log("Save");
-				console.log(e);
-            }, (file) => {
-                return !file.blank;
-            }),
-            new Option('New deFolder', (e) => {
-				console.log("New deFolder");
-            }, (file) => {
-                return file.blank;
-            }),
-            new Option('New de Folder que eu criei', (e) => {
-				console.log("New de Folder");
-            }, (file) => {
-                return file.blank;
-            })
-        ]
+        options: []
     },
     mounted() {
-        const that = this;
-        let x = 0;
-        const file = this.files[1];
-        //console.log(file);
-        let interval = setInterval(() => {
-            x+=5;
-            file.progress = x;
-            if(x >= 100) {
-                clearInterval(interval);
-            }
-        }, 1000);
+        this.options.push(new Option('Delete', (e) => {
+            this.files = this.files.filter(f => f.id != e.id);
+        }, (file) => {
+            return !file.blank;
+        }));
     },
     methods: {
         contextmenu(e) {
         },
         uploadCanceled(file) {
-            console.log(file);
+        },
+        drop(files) {
+            const ids = this.files.map(f => f.id);
+            let fakeId = this.genFakeId();
+            while(ids.find(id => id == fakeId)) {
+                fakeId = this.genFakeId();
+            }
+            let x = 0;
+            let file = new File(fakeId, files[0].name, this.files.length);
+            file.uploading = true;
+            this.files.push(file);
+            let interval = setInterval(() => {
+                x+=5;
+                file.progress = x;
+                if(x >= 100 || !file.uploading) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        },
+        genFakeId() {
+            return Math.floor((Math.random() * 1000) + 1);
         }
     }
 });

@@ -69,12 +69,14 @@ export default {
             if(val){
                 this.hideAllContextMenu();
 				this.$nextTick(() => {//resize font to fit in the div's default height
-					let defaultFontSize = 13;
-					this.$refs.opt.forEach(el => {
-						while(el.clientHeight > 30) {
-							el.style.fontSize = --defaultFontSize + 'px';
-						}
-					});					
+                    if(this.$refs.opt) {
+                        let defaultFontSize = 13;
+                        this.$refs.opt.forEach(el => {
+                            while(el.clientHeight > 30) {
+                                el.style.fontSize = --defaultFontSize + 'px';
+                            }
+                        });					
+                    }
 				});				
             }
         }
@@ -83,7 +85,8 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
-    $blue = #191970 
+    //$blue = #191970 
+    $blue = gray
     .v-exp-context-menu {
 		min-width: 110px
         max-width: 130px		

@@ -64,9 +64,11 @@ export default {
         dragleave() {
             this.draggingover = false
         },
-        drop() {
+        drop(e) {
             this.draggingover = false
-            this.$emit('drop', this.file);
+            if(!e.dataTransfer.files[0]) {
+                this.$emit('drop', this.file);
+            }
         },
         dragstart(e) {
             e.dataTransfer.setData('application/json', this.file); //required to work in Firefox
@@ -108,7 +110,7 @@ export default {
     computed: {
         _fileName() {
             if (!this.file.blank && this.file.name.length > 13) {
-                return this.file.name.substring(0, 13).trim().concat('...');
+                return this.file.name.substring(0, 11).trim().concat('...');
             }
             return this.file.name;
         }

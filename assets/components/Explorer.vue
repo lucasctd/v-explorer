@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container">
+    <div class="container" @drop.prevent="drop">
         <transition-group name="list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
@@ -103,6 +103,10 @@ export default {
         uploadCanceled(file) {
             this.localFiles[file.index].blank = true;
             this.$emit('upload-canceled', file);
+        drop(e) {
+            if(e.dataTransfer.files.length > 0) {
+                this.$emit('drop', e.dataTransfer.files);
+            }
         }
     },
     components: {

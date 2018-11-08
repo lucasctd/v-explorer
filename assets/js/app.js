@@ -10,8 +10,8 @@ new Vue({
     data: {
         files: [
             new File(1, "File 1 wqewq weqeq www", 0, 'file', false, true),
-            new File(2, "File 2 qwew eeeee", 1, 'file', false, true, 80),
-            new File(3, "File 3", 2)
+            new File(2, "File 2 qwew eeeee", 1),
+            new File(3, "File 3", 7)
         ],
         options: []
     },
@@ -34,16 +34,16 @@ new Vue({
                 fakeId = this.genFakeId();
             }
             let x = 0;
-            let file = new File(fakeId, files[0].name, this.files.length);
+            let file = new File(fakeId, files[0].name, 4);
             file.uploading = true;
             this.files.push(file);
-            let interval = setInterval(() => {
+            /*let interval = setInterval(() => {
                 x+=5;
                 file.progress = x;
                 if(x >= 100 || !file.uploading) {
                     clearInterval(interval);
                 }
-            }, 1000);
+            }, 1000);*/
         },
         genFakeId() {
             return Math.floor((Math.random() * 1000) + 1);

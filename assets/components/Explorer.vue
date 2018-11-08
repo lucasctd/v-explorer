@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container" @drop.prevent="drop">
+    <div id="v-explorer-container" class="container" @drop.prevent="drop">
         <transition-group name="list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
@@ -50,15 +50,18 @@ export default {
             this.oldFiles = this.oldFiles.concat(this.files);
         },
         updateFiles(file) {
-            const destFileIndex = file.index;
-            const draggedFileIndex = this.draggedFile.index;
-
-            this.localFiles[destFileIndex].index = draggedFileIndex;
-            this.localFiles[draggedFileIndex].index = destFileIndex;
-
-            this.localFiles.splice(destFileIndex, 1, this.draggedFile);
-            this.localFiles.splice(draggedFileIndex, 1, file);
+            this.swap(file, this.draggedFile);
         },
+		swap(fileA, fileB) {
+			const fileAIndex = fileA.index;
+            const fileBIndex = fileB.index;
+
+            this.localFiles[fileAIndex].index = fileBIndex;
+            this.localFiles[fileBIndex].index = fileAIndex;
+
+            this.localFiles.splice(fileAIndex, 1, fileB);
+            this.localFiles.splice(fileBIndex, 1, fileA);
+		},
         dragstart(file) {
             this.draggedFile = file;
         },
@@ -97,7 +100,21 @@ export default {
             this.selectedFiles = [];
         },
         uploadCanceled(file) {
-            this.localFiles[file.index].blank = true;
+            //this.localFiles[file.index].blank = true;
+			const containerWidth = document.getElementById('v-explorer-container').offsetWidth ;
+			const block = document.getElementById(file.id);
+			const blockStyle = getComputedStyle(block);
+			const blockWidth = parseInt(blockStyle.marginLeft) + parseInt(blockStyle.marginRight) + block.clientWidth;
+			const numBlocksPerLine = Math.floor(containerWidth / blockWidth);
+			const mod = file.index % numBlocksPerLine;
+			
+			const blank = this.localFiles.find(f => f.index >= numBlocksPerLine && f.blank && mod == (f.index % numBlocksPerLine));
+			const that = this;
+			setTimeout(() => {
+				block.style.opacity = 0;
+				that.localFiles[file.index] = generateBlankFile(file.index);
+			}, 50);
+			this.swap(file, blank);			
             //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
             this.$emit('upload-canceled', file);
         },

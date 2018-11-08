@@ -514,19 +514,20 @@ module.exports = function normalizeComponent (
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return icon; });
-/* unused harmony export noAuto */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return config; });
-/* unused harmony export toHtml */
-/* unused harmony export layer */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return text; });
-/* unused harmony export counter */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return library; });
-/* unused harmony export dom */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return parse; });
-/* unused harmony export findIconDefinition */
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "icon", function() { return icon; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noAuto", function() { return noAuto; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toHtml", function() { return toHtml; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "layer", function() { return layer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "text", function() { return text; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "counter", function() { return counter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "library", function() { return library; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dom", function() { return dom; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findIconDefinition", function() { return findIconDefinition; });
 /*!
- * Font Awesome Free 5.4.2 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.3.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 var noop = function noop() {};
@@ -802,15 +803,12 @@ function insertCss(css) {
   return css;
 }
 
-var idPool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var _uniqueId = 0;
 
 function nextUniqueId() {
-  var size = 12;
-  var id = '';
-  while (size-- > 0) {
-    id += idPool[Math.random() * 62 | 0];
-  }
-  return id;
+  _uniqueId++;
+
+  return _uniqueId;
 }
 
 function toArray(obj) {
@@ -1207,7 +1205,7 @@ function makeLayersCounterAbstract(params) {
 
 var noop$2 = function noop() {};
 var p = config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMANCE.measure ? PERFORMANCE : { mark: noop$2, measure: noop$2 };
-var preamble = 'FA "5.4.2"';
+var preamble = 'FA "5.3.1"';
 
 var begin = function begin(name) {
   p.mark(preamble + ' ' + name + ' begins');
@@ -2548,7 +2546,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('v-explorer', __WEBPACK_IM
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     data: {
-        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0, 'file', false, true), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 1, 'file', false, true, 80), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 2)],
+        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0, 'file', false, true), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 1), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 7)],
         options: []
     },
     mounted: function mounted() {
@@ -2577,16 +2575,16 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
                 fakeId = this.genFakeId();
             }
             var x = 0;
-            var file = new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](fakeId, files[0].name, this.files.length);
+            var file = new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](fakeId, files[0].name, 4);
             file.uploading = true;
             this.files.push(file);
-            var interval = setInterval(function () {
-                x += 5;
+            /*let interval = setInterval(() => {
+                x+=5;
                 file.progress = x;
-                if (x >= 100 || !file.uploading) {
+                if(x >= 100 || !file.uploading) {
                     clearInterval(interval);
                 }
-            }, 1000);
+            }, 1000);*/
         },
         genFakeId: function genFakeId() {
             return Math.floor(Math.random() * 1000 + 1);
@@ -14202,14 +14200,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.oldFiles = this.oldFiles.concat(this.files);
         },
         updateFiles: function updateFiles(file) {
-            var destFileIndex = file.index;
-            var draggedFileIndex = this.draggedFile.index;
+            this.swap(file, this.draggedFile);
+        },
+        swap: function swap(fileA, fileB) {
+            var fileAIndex = fileA.index;
+            var fileBIndex = fileB.index;
 
-            this.localFiles[destFileIndex].index = draggedFileIndex;
-            this.localFiles[draggedFileIndex].index = destFileIndex;
+            this.localFiles[fileAIndex].index = fileBIndex;
+            this.localFiles[fileBIndex].index = fileAIndex;
 
-            this.localFiles.splice(destFileIndex, 1, this.draggedFile);
-            this.localFiles.splice(draggedFileIndex, 1, file);
+            this.localFiles.splice(fileAIndex, 1, fileB);
+            this.localFiles.splice(fileBIndex, 1, fileA);
         },
         dragstart: function dragstart(file) {
             this.draggedFile = file;
@@ -14250,7 +14251,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.selectedFiles = [];
         },
         uploadCanceled: function uploadCanceled(file) {
-            this.localFiles[file.index].blank = true;
+            //this.localFiles[file.index].blank = true;
+            var containerWidth = document.getElementById('v-explorer-container').offsetWidth;
+            var block = document.getElementById(file.id);
+            var blockStyle = getComputedStyle(block);
+            var blockWidth = parseInt(blockStyle.marginLeft) + parseInt(blockStyle.marginRight) + block.clientWidth;
+            var numBlocksPerLine = Math.floor(containerWidth / blockWidth);
+            var mod = file.index % numBlocksPerLine;
+
+            var blank = this.localFiles.find(function (f) {
+                return f.index >= numBlocksPerLine && f.blank && mod == f.index % numBlocksPerLine;
+            });
+            var that = this;
+            setTimeout(function () {
+                block.style.opacity = 0;
+                that.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(file.index);
+            }, 50);
+            this.swap(file, blank);
             //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
             this.$emit('upload-canceled', file);
         },
@@ -14388,6 +14405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fortawesome_free_regular_svg_icons__ = __webpack_require__(27);
 //
@@ -14424,7 +14442,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library */].add(__WEBPACK_IMPORTED_MODULE_3__fortawesome_free_regular_svg_icons__["a" /* far */]);
+__WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["library"].add(__WEBPACK_IMPORTED_MODULE_3__fortawesome_free_regular_svg_icons__["a" /* far */]);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -14525,7 +14543,7 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library *
     },
     components: {
         'v-context-menu': __WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue___default.a,
-        'fa-icon': __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__["a" /* FontAwesomeIcon */]
+        'fa-icon': __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__["FontAwesomeIcon"]
     }
 });
 
@@ -14771,516 +14789,521 @@ if (false) {
 
 /***/ }),
 /* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FontAwesomeIcon; });
-/* unused harmony export FontAwesomeLayers */
-/* unused harmony export FontAwesomeLayersText */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fortawesome_fontawesome_svg_core__ = __webpack_require__(4);
-
-
-var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var humps = createCommonjsModule(function (module) {
-(function(global) {
-
-  var _processKeys = function(convert, obj, options) {
-    if(!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj) || _isFunction(obj)) {
-      return obj;
-    }
-
-    var output,
-        i = 0,
-        l = 0;
-
-    if(_isArray(obj)) {
-      output = [];
-      for(l=obj.length; i<l; i++) {
-        output.push(_processKeys(convert, obj[i], options));
-      }
-    }
-    else {
-      output = {};
-      for(var key in obj) {
-        if(Object.prototype.hasOwnProperty.call(obj, key)) {
-          output[convert(key, options)] = _processKeys(convert, obj[key], options);
-        }
-      }
-    }
-    return output;
-  };
-
-  // String conversion methods
-
-  var separateWords = function(string, options) {
-    options = options || {};
-    var separator = options.separator || '_';
-    var split = options.split || /(?=[A-Z])/;
-
-    return string.split(split).join(separator);
-  };
-
-  var camelize = function(string) {
-    if (_isNumerical(string)) {
-      return string;
-    }
-    string = string.replace(/[\-_\s]+(.)?/g, function(match, chr) {
-      return chr ? chr.toUpperCase() : '';
-    });
-    // Ensure 1st char is always lowercase
-    return string.substr(0, 1).toLowerCase() + string.substr(1);
-  };
-
-  var pascalize = function(string) {
-    var camelized = camelize(string);
-    // Ensure 1st char is always uppercase
-    return camelized.substr(0, 1).toUpperCase() + camelized.substr(1);
-  };
-
-  var decamelize = function(string, options) {
-    return separateWords(string, options).toLowerCase();
-  };
-
-  // Utilities
-  // Taken from Underscore.js
-
-  var toString = Object.prototype.toString;
-
-  var _isFunction = function(obj) {
-    return typeof(obj) === 'function';
-  };
-  var _isObject = function(obj) {
-    return obj === Object(obj);
-  };
-  var _isArray = function(obj) {
-    return toString.call(obj) == '[object Array]';
-  };
-  var _isDate = function(obj) {
-    return toString.call(obj) == '[object Date]';
-  };
-  var _isRegExp = function(obj) {
-    return toString.call(obj) == '[object RegExp]';
-  };
-  var _isBoolean = function(obj) {
-    return toString.call(obj) == '[object Boolean]';
-  };
-
-  // Performant way to determine if obj coerces to a number
-  var _isNumerical = function(obj) {
-    obj = obj - 0;
-    return obj === obj;
-  };
-
-  // Sets up function which handles processing keys
-  // allowing the convert function to be modified by a callback
-  var _processor = function(convert, options) {
-    var callback = options && 'process' in options ? options.process : options;
-
-    if(typeof(callback) !== 'function') {
-      return convert;
-    }
-
-    return function(string, options) {
-      return callback(string, convert, options);
-    }
-  };
-
-  var humps = {
-    camelize: camelize,
-    decamelize: decamelize,
-    pascalize: pascalize,
-    depascalize: decamelize,
-    camelizeKeys: function(object, options) {
-      return _processKeys(_processor(camelize, options), object);
-    },
-    decamelizeKeys: function(object, options) {
-      return _processKeys(_processor(decamelize, options), object, options);
-    },
-    pascalizeKeys: function(object, options) {
-      return _processKeys(_processor(pascalize, options), object);
-    },
-    depascalizeKeys: function () {
-      return this.decamelizeKeys.apply(this, arguments);
-    }
-  };
-
-  if (false) {
-    undefined(humps);
-  } else if ('object' !== 'undefined' && module.exports) {
-    module.exports = humps;
-  } else {
-    global.humps = humps;
-  }
-
-})(commonjsGlobal);
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-var defineProperty = function (obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-var objectWithoutProperties = function (obj, keys) {
-  var target = {};
-
-  for (var i in obj) {
-    if (keys.indexOf(i) >= 0) continue;
-    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-    target[i] = obj[i];
-  }
-
-  return target;
-};
-
-var toConsumableArray = function (arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-    return arr2;
-  } else {
-    return Array.from(arr);
-  }
-};
-
-function styleToObject(style) {
-  return style.split(';').map(function (s) {
-    return s.trim();
-  }).filter(function (s) {
-    return s;
-  }).reduce(function (acc, pair) {
-    var i = pair.indexOf(':');
-    var prop = humps.camelize(pair.slice(0, i));
-    var value = pair.slice(i + 1).trim();
-
-    acc[prop] = value;
-
-    return acc;
-  }, {});
-}
-
-function classToObject(cls) {
-  return cls.split(/\s+/).reduce(function (acc, c) {
-    acc[c] = true;
-
-    return acc;
-  }, {});
-}
-
-function combineClassObjects() {
-  for (var _len = arguments.length, objs = Array(_len), _key = 0; _key < _len; _key++) {
-    objs[_key] = arguments[_key];
-  }
-
-  return objs.reduce(function (acc, obj) {
-    if (Array.isArray(obj)) {
-      acc = acc.concat(obj);
-    } else {
-      acc.push(obj);
-    }
-
-    return acc;
-  }, []);
-}
-
-function convert(h, element) {
-  var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-
-  var children = (element.children || []).map(convert.bind(null, h));
-
-  var mixins = Object.keys(element.attributes || {}).reduce(function (acc, key) {
-    var val = element.attributes[key];
-
-    switch (key) {
-      case 'class':
-        acc['class'] = classToObject(val);
-        break;
-      case 'style':
-        acc['style'] = styleToObject(val);
-        break;
-      default:
-        acc.attrs[key] = val;
-    }
-
-    return acc;
-  }, { 'class': {}, style: {}, attrs: {} });
-
-  var _data$class = data.class,
-      dClass = _data$class === undefined ? {} : _data$class,
-      _data$style = data.style,
-      dStyle = _data$style === undefined ? {} : _data$style,
-      _data$attrs = data.attrs,
-      dAttrs = _data$attrs === undefined ? {} : _data$attrs,
-      remainingData = objectWithoutProperties(data, ['class', 'style', 'attrs']);
-
-
-  if (typeof element === 'string') {
-    return element;
-  } else {
-    return h(element.tag, _extends({
-      class: combineClassObjects(mixins.class, dClass),
-      style: _extends({}, mixins.style, dStyle),
-      attrs: _extends({}, mixins.attrs, dAttrs)
-    }, remainingData, {
-      props: props
-    }), children);
-  }
-}
-
-var PRODUCTION = false;
-
-try {
-  PRODUCTION = "development" === 'production';
-} catch (e) {}
-
-function log () {
-  if (!PRODUCTION && console && typeof console.error === 'function') {
-    var _console;
-
-    (_console = console).error.apply(_console, arguments);
-  }
-}
-
-function objectWithKey(key, value) {
-  return Array.isArray(value) && value.length > 0 || !Array.isArray(value) && value ? defineProperty({}, key, value) : {};
-}
-
-function classList(props) {
-  var _classes;
-
-  var classes = (_classes = {
-    'fa-spin': props.spin,
-    'fa-pulse': props.pulse,
-    'fa-fw': props.fixedWidth,
-    'fa-border': props.border,
-    'fa-li': props.listItem,
-    'fa-flip-horizontal': props.flip === 'horizontal' || props.flip === 'both',
-    'fa-flip-vertical': props.flip === 'vertical' || props.flip === 'both'
-  }, defineProperty(_classes, 'fa-' + props.size, props.size !== null), defineProperty(_classes, 'fa-rotate-' + props.rotation, props.rotation !== null), defineProperty(_classes, 'fa-pull-' + props.pull, props.pull !== null), _classes);
-
-  return Object.keys(classes).map(function (key) {
-    return classes[key] ? key : null;
-  }).filter(function (key) {
-    return key;
-  });
-}
-
-function addStaticClass(to, what) {
-  var val = (to || '').length === 0 ? [] : [to];
-
-  return val.concat(what).join(' ');
-}
-
-function normalizeIconArgs(icon$$1) {
-  if (icon$$1 === null) {
-    return null;
-  }
-
-  if ((typeof icon$$1 === 'undefined' ? 'undefined' : _typeof(icon$$1)) === 'object' && icon$$1.prefix && icon$$1.iconName) {
-    return icon$$1;
-  }
-
-  if (Array.isArray(icon$$1) && icon$$1.length === 2) {
-    return { prefix: icon$$1[0], iconName: icon$$1[1] };
-  }
-
-  if (typeof icon$$1 === 'string') {
-    return { prefix: 'fas', iconName: icon$$1 };
-  }
-}
-
-var FontAwesomeIcon = {
-  name: 'FontAwesomeIcon',
-
-  functional: true,
-
-  props: {
-    border: {
-      type: Boolean,
-      default: false
-    },
-    fixedWidth: {
-      type: Boolean,
-      default: false
-    },
-    flip: {
-      type: String,
-      default: null,
-      validator: function validator(value) {
-        return ['horizontal', 'vertical', 'both'].indexOf(value) > -1;
-      }
-    },
-    icon: {
-      type: [Object, Array, String],
-      required: true
-    },
-    mask: {
-      type: [Object, Array, String],
-      default: null
-    },
-    listItem: {
-      type: Boolean,
-      default: false
-    },
-    pull: {
-      type: String,
-      default: null,
-      validator: function validator(value) {
-        return ['right', 'left'].indexOf(value) > -1;
-      }
-    },
-    pulse: {
-      type: Boolean,
-      default: false
-    },
-    rotation: {
-      type: Number,
-      default: null,
-      validator: function validator(value) {
-        return [90, 180, 270].indexOf(value) > -1;
-      }
-    },
-    size: {
-      type: String,
-      default: null,
-      validator: function validator(value) {
-        return ['lg', 'xs', 'sm', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x'].indexOf(value) > -1;
-      }
-    },
-    spin: {
-      type: Boolean,
-      default: false
-    },
-    transform: {
-      type: [String, Object],
-      default: null
-    },
-    symbol: {
-      type: [Boolean, String],
-      default: false
-    }
-  },
-
-  render: function render(createElement, context) {
-    var props = context.props;
-    var iconArgs = props.icon,
-        maskArgs = props.mask,
-        symbol = props.symbol;
-
-    var icon$$1 = normalizeIconArgs(iconArgs);
-    var classes = objectWithKey('classes', classList(props));
-    var transform = objectWithKey('transform', typeof props.transform === 'string' ? __WEBPACK_IMPORTED_MODULE_0__fortawesome_fontawesome_svg_core__["d" /* parse */].transform(props.transform) : props.transform);
-    var mask = objectWithKey('mask', normalizeIconArgs(maskArgs));
-
-    var renderedIcon = Object(__WEBPACK_IMPORTED_MODULE_0__fortawesome_fontawesome_svg_core__["b" /* icon */])(icon$$1, _extends({}, classes, transform, mask, { symbol: symbol }));
-
-    if (!renderedIcon) {
-      return log('Could not find one or more icon(s)', icon$$1, mask);
-    }
-
-    var abstract = renderedIcon.abstract;
-
-    var convertCurry = convert.bind(null, createElement);
-
-    return convertCurry(abstract[0], {}, context.data);
-  }
-};
-
-var FontAwesomeLayers = {
-  name: 'FontAwesomeLayers',
-
-  functional: true,
-
-  props: {
-    fixedWidth: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  render: function render(createElement, context) {
-    var familyPrefix = __WEBPACK_IMPORTED_MODULE_0__fortawesome_fontawesome_svg_core__["a" /* config */].familyPrefix;
-    var staticClass = context.data.staticClass;
-
-
-    var classes = [familyPrefix + '-layers'].concat(toConsumableArray(context.props.fixedWidth ? [familyPrefix + '-fw'] : []));
-
-    return createElement('div', _extends({}, context.data, {
-      staticClass: addStaticClass(staticClass, classes)
-    }), context.children);
-  }
-};
-
-var FontAwesomeLayersText = {
-  name: 'FontAwesomeLayersText',
-
-  functional: true,
-
-  props: {
-    value: {
-      type: [String, Number],
-      default: ''
-    },
-    transform: {
-      type: [String, Object],
-      default: null
-    }
-  },
-
-  render: function render(createElement, context) {
-    var props = context.props;
-
-    var transform = objectWithKey('transform', typeof props.transform === 'string' ? __WEBPACK_IMPORTED_MODULE_0__fortawesome_fontawesome_svg_core__["d" /* parse */].transform(props.transform) : props.transform);
-
-    var renderedText = Object(__WEBPACK_IMPORTED_MODULE_0__fortawesome_fontawesome_svg_core__["e" /* text */])(props.value.toString(), _extends({}, transform));
-
-    var abstract = renderedText.abstract;
-
-
-    var convertCurry = convert.bind(null, createElement);
-
-    return convertCurry(abstract[0], {}, context.data);
-  }
-};
-
-
-
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {(function (global, factory) {
+	 true ? factory(exports, __webpack_require__(4)) :
+	typeof define === 'function' && define.amd ? define(['exports', '@fortawesome/fontawesome-svg-core'], factory) :
+	(factory((global['vue-fontawesome'] = {}),global.FontAwesome));
+}(this, (function (exports,fontawesomeSvgCore) { 'use strict';
+
+	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+	function createCommonjsModule(fn, module) {
+		return module = { exports: {} }, fn(module, module.exports), module.exports;
+	}
+
+	var humps = createCommonjsModule(function (module) {
+	(function(global) {
+
+	  var _processKeys = function(convert, obj, options) {
+	    if(!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj) || _isFunction(obj)) {
+	      return obj;
+	    }
+
+	    var output,
+	        i = 0,
+	        l = 0;
+
+	    if(_isArray(obj)) {
+	      output = [];
+	      for(l=obj.length; i<l; i++) {
+	        output.push(_processKeys(convert, obj[i], options));
+	      }
+	    }
+	    else {
+	      output = {};
+	      for(var key in obj) {
+	        if(Object.prototype.hasOwnProperty.call(obj, key)) {
+	          output[convert(key, options)] = _processKeys(convert, obj[key], options);
+	        }
+	      }
+	    }
+	    return output;
+	  };
+
+	  // String conversion methods
+
+	  var separateWords = function(string, options) {
+	    options = options || {};
+	    var separator = options.separator || '_';
+	    var split = options.split || /(?=[A-Z])/;
+
+	    return string.split(split).join(separator);
+	  };
+
+	  var camelize = function(string) {
+	    if (_isNumerical(string)) {
+	      return string;
+	    }
+	    string = string.replace(/[\-_\s]+(.)?/g, function(match, chr) {
+	      return chr ? chr.toUpperCase() : '';
+	    });
+	    // Ensure 1st char is always lowercase
+	    return string.substr(0, 1).toLowerCase() + string.substr(1);
+	  };
+
+	  var pascalize = function(string) {
+	    var camelized = camelize(string);
+	    // Ensure 1st char is always uppercase
+	    return camelized.substr(0, 1).toUpperCase() + camelized.substr(1);
+	  };
+
+	  var decamelize = function(string, options) {
+	    return separateWords(string, options).toLowerCase();
+	  };
+
+	  // Utilities
+	  // Taken from Underscore.js
+
+	  var toString = Object.prototype.toString;
+
+	  var _isFunction = function(obj) {
+	    return typeof(obj) === 'function';
+	  };
+	  var _isObject = function(obj) {
+	    return obj === Object(obj);
+	  };
+	  var _isArray = function(obj) {
+	    return toString.call(obj) == '[object Array]';
+	  };
+	  var _isDate = function(obj) {
+	    return toString.call(obj) == '[object Date]';
+	  };
+	  var _isRegExp = function(obj) {
+	    return toString.call(obj) == '[object RegExp]';
+	  };
+	  var _isBoolean = function(obj) {
+	    return toString.call(obj) == '[object Boolean]';
+	  };
+
+	  // Performant way to determine if obj coerces to a number
+	  var _isNumerical = function(obj) {
+	    obj = obj - 0;
+	    return obj === obj;
+	  };
+
+	  // Sets up function which handles processing keys
+	  // allowing the convert function to be modified by a callback
+	  var _processor = function(convert, options) {
+	    var callback = options && 'process' in options ? options.process : options;
+
+	    if(typeof(callback) !== 'function') {
+	      return convert;
+	    }
+
+	    return function(string, options) {
+	      return callback(string, convert, options);
+	    }
+	  };
+
+	  var humps = {
+	    camelize: camelize,
+	    decamelize: decamelize,
+	    pascalize: pascalize,
+	    depascalize: decamelize,
+	    camelizeKeys: function(object, options) {
+	      return _processKeys(_processor(camelize, options), object);
+	    },
+	    decamelizeKeys: function(object, options) {
+	      return _processKeys(_processor(decamelize, options), object, options);
+	    },
+	    pascalizeKeys: function(object, options) {
+	      return _processKeys(_processor(pascalize, options), object);
+	    },
+	    depascalizeKeys: function () {
+	      return this.decamelizeKeys.apply(this, arguments);
+	    }
+	  };
+
+	  if (false) {
+	    undefined(humps);
+	  } else if ('object' !== 'undefined' && module.exports) {
+	    module.exports = humps;
+	  } else {
+	    global.humps = humps;
+	  }
+
+	})(commonjsGlobal);
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+	  return typeof obj;
+	} : function (obj) {
+	  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+	};
+
+	var defineProperty = function (obj, key, value) {
+	  if (key in obj) {
+	    Object.defineProperty(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];
+
+	    for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }
+
+	  return target;
+	};
+
+	var objectWithoutProperties = function (obj, keys) {
+	  var target = {};
+
+	  for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;
+	    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+	    target[i] = obj[i];
+	  }
+
+	  return target;
+	};
+
+	var toConsumableArray = function (arr) {
+	  if (Array.isArray(arr)) {
+	    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+	    return arr2;
+	  } else {
+	    return Array.from(arr);
+	  }
+	};
+
+	function styleToObject(style) {
+	  return style.split(';').map(function (s) {
+	    return s.trim();
+	  }).filter(function (s) {
+	    return s;
+	  }).reduce(function (acc, pair) {
+	    var i = pair.indexOf(':');
+	    var prop = humps.camelize(pair.slice(0, i));
+	    var value = pair.slice(i + 1).trim();
+
+	    acc[prop] = value;
+
+	    return acc;
+	  }, {});
+	}
+
+	function classToObject(cls) {
+	  return cls.split(/\s+/).reduce(function (acc, c) {
+	    acc[c] = true;
+
+	    return acc;
+	  }, {});
+	}
+
+	function combineClassObjects() {
+	  for (var _len = arguments.length, objs = Array(_len), _key = 0; _key < _len; _key++) {
+	    objs[_key] = arguments[_key];
+	  }
+
+	  return objs.reduce(function (acc, obj) {
+	    if (Array.isArray(obj)) {
+	      acc = acc.concat(obj);
+	    } else {
+	      acc.push(obj);
+	    }
+
+	    return acc;
+	  }, []);
+	}
+
+	function convert(h, element) {
+	  var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	  var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
+	  var children = (element.children || []).map(convert.bind(null, h));
+
+	  var mixins = Object.keys(element.attributes || {}).reduce(function (acc, key) {
+	    var val = element.attributes[key];
+
+	    switch (key) {
+	      case 'class':
+	        acc['class'] = classToObject(val);
+	        break;
+	      case 'style':
+	        acc['style'] = styleToObject(val);
+	        break;
+	      default:
+	        acc.attrs[key] = val;
+	    }
+
+	    return acc;
+	  }, { 'class': {}, style: {}, attrs: {} });
+
+	  var _data$class = data.class,
+	      dClass = _data$class === undefined ? {} : _data$class,
+	      _data$style = data.style,
+	      dStyle = _data$style === undefined ? {} : _data$style,
+	      _data$attrs = data.attrs,
+	      dAttrs = _data$attrs === undefined ? {} : _data$attrs,
+	      remainingData = objectWithoutProperties(data, ['class', 'style', 'attrs']);
+
+
+	  if (typeof element === 'string') {
+	    return element;
+	  } else {
+	    return h(element.tag, _extends({
+	      class: combineClassObjects(mixins.class, dClass),
+	      style: _extends({}, mixins.style, dStyle),
+	      attrs: _extends({}, mixins.attrs, dAttrs)
+	    }, remainingData, {
+	      props: props
+	    }), children);
+	  }
+	}
+
+	var PRODUCTION = false;
+
+	try {
+	  PRODUCTION = "development" === 'production';
+	} catch (e) {}
+
+	function log () {
+	  if (!PRODUCTION && console && typeof console.error === 'function') {
+	    var _console;
+
+	    (_console = console).error.apply(_console, arguments);
+	  }
+	}
+
+	function objectWithKey(key, value) {
+	  return Array.isArray(value) && value.length > 0 || !Array.isArray(value) && value ? defineProperty({}, key, value) : {};
+	}
+
+	function classList(props) {
+	  var _classes;
+
+	  var classes = (_classes = {
+	    'fa-spin': props.spin,
+	    'fa-pulse': props.pulse,
+	    'fa-fw': props.fixedWidth,
+	    'fa-border': props.border,
+	    'fa-li': props.listItem,
+	    'fa-flip-horizontal': props.flip === 'horizontal' || props.flip === 'both',
+	    'fa-flip-vertical': props.flip === 'vertical' || props.flip === 'both'
+	  }, defineProperty(_classes, 'fa-' + props.size, props.size !== null), defineProperty(_classes, 'fa-rotate-' + props.rotation, props.rotation !== null), defineProperty(_classes, 'fa-pull-' + props.pull, props.pull !== null), _classes);
+
+	  return Object.keys(classes).map(function (key) {
+	    return classes[key] ? key : null;
+	  }).filter(function (key) {
+	    return key;
+	  });
+	}
+
+	function addStaticClass(to, what) {
+	  var val = (to || '').length === 0 ? [] : [to];
+
+	  return val.concat(what).join(' ');
+	}
+
+	function normalizeIconArgs(icon) {
+	  if (icon === null) {
+	    return null;
+	  }
+
+	  if ((typeof icon === 'undefined' ? 'undefined' : _typeof(icon)) === 'object' && icon.prefix && icon.iconName) {
+	    return icon;
+	  }
+
+	  if (Array.isArray(icon) && icon.length === 2) {
+	    return { prefix: icon[0], iconName: icon[1] };
+	  }
+
+	  if (typeof icon === 'string') {
+	    return { prefix: 'fas', iconName: icon };
+	  }
+	}
+
+	var FontAwesomeIcon = {
+	  name: 'FontAwesomeIcon',
+
+	  functional: true,
+
+	  props: {
+	    border: {
+	      type: Boolean,
+	      default: false
+	    },
+	    fixedWidth: {
+	      type: Boolean,
+	      default: false
+	    },
+	    flip: {
+	      type: String,
+	      default: null,
+	      validator: function validator(value) {
+	        return ['horizontal', 'vertical', 'both'].indexOf(value) > -1;
+	      }
+	    },
+	    icon: {
+	      type: [Object, Array, String],
+	      required: true
+	    },
+	    mask: {
+	      type: [Object, Array, String],
+	      default: null
+	    },
+	    listItem: {
+	      type: Boolean,
+	      default: false
+	    },
+	    pull: {
+	      type: String,
+	      default: null,
+	      validator: function validator(value) {
+	        return ['right', 'left'].indexOf(value) > -1;
+	      }
+	    },
+	    pulse: {
+	      type: Boolean,
+	      default: false
+	    },
+	    rotation: {
+	      type: Number,
+	      default: null,
+	      validator: function validator(value) {
+	        return [90, 180, 270].indexOf(value) > -1;
+	      }
+	    },
+	    size: {
+	      type: String,
+	      default: null,
+	      validator: function validator(value) {
+	        return ['lg', 'xs', 'sm', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x'].indexOf(value) > -1;
+	      }
+	    },
+	    spin: {
+	      type: Boolean,
+	      default: false
+	    },
+	    transform: {
+	      type: [String, Object],
+	      default: null
+	    },
+	    symbol: {
+	      type: [Boolean, String],
+	      default: false
+	    }
+	  },
+
+	  render: function render(createElement, context) {
+	    var props = context.props;
+	    var iconArgs = props.icon,
+	        maskArgs = props.mask,
+	        symbol = props.symbol;
+
+	    var icon = normalizeIconArgs(iconArgs);
+	    var classes = objectWithKey('classes', classList(props));
+	    var transform = objectWithKey('transform', typeof props.transform === 'string' ? fontawesomeSvgCore.parse.transform(props.transform) : props.transform);
+	    var mask = objectWithKey('mask', normalizeIconArgs(maskArgs));
+
+	    var renderedIcon = fontawesomeSvgCore.icon(icon, _extends({}, classes, transform, mask, { symbol: symbol }));
+
+	    if (!renderedIcon) {
+	      return log('Could not find one or more icon(s)', icon, mask);
+	    }
+
+	    var abstract = renderedIcon.abstract;
+
+	    var convertCurry = convert.bind(null, createElement);
+
+	    return convertCurry(abstract[0], {}, context.data);
+	  }
+	};
+
+	var FontAwesomeLayers = {
+	  name: 'FontAwesomeLayers',
+
+	  functional: true,
+
+	  props: {
+	    fixedWidth: {
+	      type: Boolean,
+	      default: false
+	    }
+	  },
+
+	  render: function render(createElement, context) {
+	    var familyPrefix = fontawesomeSvgCore.config.familyPrefix;
+	    var staticClass = context.data.staticClass;
+
+
+	    var classes = [familyPrefix + '-layers'].concat(toConsumableArray(context.props.fixedWidth ? [familyPrefix + '-fw'] : []));
+
+	    return createElement('div', _extends({}, context.data, {
+	      staticClass: addStaticClass(staticClass, classes)
+	    }), context.children);
+	  }
+	};
+
+	var FontAwesomeLayersText = {
+	  name: 'FontAwesomeLayersText',
+
+	  functional: true,
+
+	  props: {
+	    value: {
+	      type: [String, Number],
+	      default: ''
+	    },
+	    transform: {
+	      type: [String, Object],
+	      default: null
+	    }
+	  },
+
+	  render: function render(createElement, context) {
+	    var props = context.props;
+
+	    var transform = objectWithKey('transform', typeof props.transform === 'string' ? fontawesomeSvgCore.parse.transform(props.transform) : props.transform);
+
+	    var renderedText = fontawesomeSvgCore.text(props.value.toString(), _extends({}, transform));
+
+	    var abstract = renderedText.abstract;
+
+
+	    var convertCurry = convert.bind(null, createElement);
+
+	    return convertCurry(abstract[0], {}, context.data);
+	  }
+	};
+
+	exports.FontAwesomeIcon = FontAwesomeIcon;
+	exports.FontAwesomeLayers = FontAwesomeLayers;
+	exports.FontAwesomeLayersText = FontAwesomeLayersText;
+
+	Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 27 */
@@ -15442,7 +15465,7 @@ var FontAwesomeLayersText = {
 /* unused harmony export faWindowMinimize */
 /* unused harmony export faWindowRestore */
 /*!
- * Font Awesome Free 5.4.2 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.3.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 var prefix = "far";
@@ -15907,6 +15930,7 @@ var render = function() {
     "div",
     {
       staticClass: "container",
+      attrs: { id: "v-explorer-container" },
       on: {
         drop: function($event) {
           $event.preventDefault()

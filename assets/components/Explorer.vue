@@ -47,6 +47,7 @@ export default {
             this.files.forEach(file => {
                 this.localFiles.splice(file.index, 1, file);
             });
+            this.localFiles.sort((a, b) => a.index - b.index);
             this.oldFiles = this.oldFiles.concat(this.files);
         },
         updateFiles(file) {
@@ -100,8 +101,16 @@ export default {
             this.selectedFiles = [];
         },
         uploadCanceled(file) {
-            //this.localFiles[file.index].blank = true;
-			const containerWidth = document.getElementById('v-explorer-container').offsetWidth ;
+			this.deleteFile(file);		
+            this.$emit('upload-canceled', file);
+        },
+        drop(e) {
+            if(e.dataTransfer.files.length > 0) {
+                this.$emit('drop', e.dataTransfer.files);
+            }
+        },
+        deleteFile(file) {
+            const containerWidth = document.getElementById('v-explorer-container').offsetWidth ;
 			const block = document.getElementById(file.id);
 			const blockStyle = getComputedStyle(block);
 			const blockWidth = parseInt(blockStyle.marginLeft) + parseInt(blockStyle.marginRight) + block.clientWidth;
@@ -114,14 +123,7 @@ export default {
 				block.style.opacity = 0;
 				that.localFiles[file.index] = generateBlankFile(file.index);
 			}, 50);
-			this.swap(file, blank);			
-            //this.localFiles.splice(file.index, 1, generateBlankFile(file.index));
-            this.$emit('upload-canceled', file);
-        },
-        drop(e) {
-            if(e.dataTransfer.files.length > 0) {
-                this.$emit('drop', e.dataTransfer.files);
-            }
+			this.swap(file, blank);
         }
     },
     watch: {
@@ -133,9 +135,8 @@ export default {
                 });
             } else {
                 let deletedFiles = this.oldFiles.filter(file => this.files.indexOf(file) == -1);
-                console.log(deletedFiles);
                 deletedFiles.forEach(file => {
-                    this.localFiles.splice(file.index, 1);
+                    this.deleteFile(file);
                 });
             }
             this.oldFiles = [].concat(this.files);

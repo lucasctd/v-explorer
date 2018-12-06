@@ -49,14 +49,18 @@ export default {
         }
     },
     mounted() {
-        this.addListeners();
-        this.loadLocalFiles();
-		this.id += ('v-explorer-container_' + Math.floor((Math.random() * 1000) + 1));
+		const that = this;
+		that.id += ('v-explorer-container_' + Math.floor((Math.random() * 1000) + 1));
+		document.addEventListener("DOMContentLoaded", function(event) {			
+			that.addListeners();
+			that.loadLocalFiles();
+		});			
     },
     methods: {
         loadLocalFiles() {
             //create blank 'files'
-            for (let x = 0; x <= this.getNumberOfBlocks(); x++){
+			const numBlocks = this.getNumberOfBlocks();
+            for (let x = 0; x <= numBlocks; x++){
                 this.localFiles.push(generateBlankFile(x));
             }
             //add the real files to the list
@@ -85,7 +89,8 @@ export default {
         dragend(file) {
         },
         getNumberOfBlocks() {
-            const totalArea = window.outerWidth * window.outerHeight;
+			const el = document.getElementById(this.id);
+            const totalArea = el.clientWidth * el.clientHeight;
             const blockSize = 100 * 135;
             return totalArea / blockSize;
         },

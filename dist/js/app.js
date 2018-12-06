@@ -14198,9 +14198,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
-        this.addListeners();
-        this.loadLocalFiles();
-        this.id += 'v-explorer-container_' + Math.floor(Math.random() * 1000 + 1);
+        var that = this;
+        that.id += 'v-explorer-container_' + Math.floor(Math.random() * 1000 + 1);
+        document.addEventListener("DOMContentLoaded", function (event) {
+            that.addListeners();
+            that.loadLocalFiles();
+        });
     },
 
     methods: {
@@ -14208,7 +14211,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             //create blank 'files'
-            for (var x = 0; x <= this.getNumberOfBlocks(); x++) {
+            var numBlocks = this.getNumberOfBlocks();
+            for (var x = 0; x <= numBlocks; x++) {
                 this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(x));
             }
             //add the real files to the list
@@ -14238,7 +14242,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         dragend: function dragend(file) {},
         getNumberOfBlocks: function getNumberOfBlocks() {
-            var totalArea = window.outerWidth * window.outerHeight;
+            var el = document.getElementById(this.id);
+            var totalArea = el.clientWidth * el.clientHeight;
             var blockSize = 100 * 135;
             return totalArea / blockSize;
         },

@@ -1,7 +1,7 @@
 
 <template>
-    <div id="v-explorer-container" class="container" @drop.prevent="drop">
-        <transition-group name="list" tag="div">
+    <div :id="id" class="v-exp-container" @drop.prevent="drop" :style="{width: width, height: height}">
+        <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
                 @contextmenu="contextmenu" @uploadCanceled="uploadCanceled">
@@ -17,6 +17,7 @@ import File, {generateBlankFile} from '../js/file'
 export default {
     data() {
         return {
+			id: '',
             draggedFile: null,
             selectedFiles: [],
             localFiles: [],
@@ -31,11 +32,26 @@ export default {
         options: {
             required: true,
             type: Array
+        },
+		width: {
+            required: false,
+            type: String,
+			default() {
+				return '100%';
+			}
+        },
+		height: {
+            required: false,
+            type: String,
+			default() {
+				return '100%';
+			}
         }
     },
     mounted() {
         this.addListeners();
         this.loadLocalFiles();
+		this.id += ('v-explorer-container_' + Math.floor((Math.random() * 1000) + 1));
     },
     methods: {
         loadLocalFiles() {
@@ -110,7 +126,7 @@ export default {
             }
         },
         deleteFile(file) {
-            const containerWidth = document.getElementById('v-explorer-container').offsetWidth ;
+            const containerWidth = document.getElementById(this.id).offsetWidth;
 			const block = document.getElementById(file.id);
 			const blockStyle = getComputedStyle(block);
 			const blockWidth = parseInt(blockStyle.marginLeft) + parseInt(blockStyle.marginRight) + block.clientWidth;
@@ -148,9 +164,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-    .container {
-        width: 100%
-        height: 100%
+    .v-exp-container {
         > div {
             display: flex
 		    flex-wrap: wrap
@@ -159,12 +173,12 @@ export default {
         }
     }
 
-    .list-enter, .list-leave-to {
+    .v-exp-list-enter, .v-exp-list-leave-to {
         opacity: 0;
         transform: translateY(30px);
     }
 
-    .list-leave-active {
+    .v-exp-list-leave-active {
         position: absolute;
     }
 </style>

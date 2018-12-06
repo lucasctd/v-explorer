@@ -12,13 +12,13 @@
          <!-- when selecting a file -->
         <div class="v-exp-file-selected" :class="{'v-exp-file-selected-enabled': selected}"></div>
         <!-- when uploading a file -->
-        <transition name="fade">
+        <transition name="v-exp-fade">
             <div v-if="file.uploading" class="v-exp-file-uploading" :style="{height: file.progress + '%'}">
                 <span :style="file.progress < 20 ? 'margin: -24px auto; color: #191970;': ''">{{file.progress}}%</span>
             </div>
         </transition>
         <!-- when mouse hovering a file -->
-        <transition name="fade">
+        <transition name="v-exp-fade">
             <div v-if="file.uploading && showCancelMessage" class="v-exp-file-abort-uploading" @click.stop="cancelUpload">
                 Cancel?
             </div>
@@ -233,11 +233,11 @@ export default {
         line-height $block_height
     }
 
-    .fade-enter-active, .fade-leave-active {
+    .v-exp-fade-enter-active, .v-exp-fade-leave-active {
         transition: opacity .5s;
     }
 
-    .fade-enter, .fade-leave-to {
+    .v-exp-fade-enter, .v-exp-fade-leave-to {
         opacity: 0;
     }
 </style>

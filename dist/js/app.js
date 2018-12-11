@@ -2473,7 +2473,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var File = function File(id, name, index) {
     var icon = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "file";
-    var blank = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var parentId = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
     var uploading = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
     var progress = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
 
@@ -2483,9 +2483,10 @@ var File = function File(id, name, index) {
     this.name = name;
     this.index = index;
     this.icon = icon;
-    this.blank = blank;
+    this.parentId = parentId;
     this.uploading = uploading;
     this.progress = progress;
+    this.children = [];
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (File);
@@ -2548,7 +2549,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('v-explorer', __WEBPACK_IM
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     data: {
-        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0, 'file', false, true), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 1), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 7)],
+        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0, 'folder'), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 1), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 7)],
         options: []
     },
     mounted: function mounted() {
@@ -2561,6 +2562,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         }, function (file) {
             return !file.blank;
         }));
+        this.files[1].parentId = 1;
     },
 
     methods: {
@@ -14169,7 +14171,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             draggedFile: null,
             selectedFiles: [],
             localFiles: [],
-            oldFiles: []
+            oldFiles: [],
+            currentFolder: null
         };
     },
 
@@ -14198,31 +14201,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
-        var that = this;
-        that.id += 'v-explorer-container_' + Math.floor(Math.random() * 1000 + 1);
+        this.id += 'v-explorer-container_' + Math.floor(Math.random() * 1000 + 1);
         document.addEventListener("DOMContentLoaded", function (event) {
-            that.addListeners();
-            that.loadLocalFiles();
-        });
+            this.addListeners();
+            this.loadChildren();
+            this.loadLocalFiles();
+        }.bind(this));
     },
 
     methods: {
-        loadLocalFiles: function loadLocalFiles() {
+        loadChildren: function loadChildren() {
             var _this = this;
 
-            //create blank 'files'
-            var numBlocks = this.getNumberOfBlocks();
-            for (var x = 0; x <= numBlocks; x++) {
-                this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(x));
-            }
-            //add the real files to the list
             this.files.forEach(function (file) {
-                _this.localFiles.splice(file.index, 1, file);
+                file.children = _this.files.filter(function (f) {
+                    return f.parentId == file.id;
+                });
             });
-            this.localFiles.sort(function (a, b) {
-                return a.index - b.index;
+        },
+        loadLocalFiles: function loadLocalFiles() {
+            //create blank 'files'
+            this.localFiles = this.localFiles.filter(function (f) {
+                //remove existing files
+                return f.blank;
             });
-            this.oldFiles = this.oldFiles.concat(this.files);
+            setTimeout(function () {
+                this.localFiles = [];
+            }.bind(this), 600);
+
+            setTimeout(function () {
+                var _this2 = this;
+
+                var numBlocks = this.getNumberOfBlocks();
+                for (var x = 0; x <= numBlocks; x++) {
+                    this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(x));
+                }
+                //add the real files to the list, if you are inside a folder, it will show only its files
+                var files = this.currentFolder == null ? this.files.filter(function (f) {
+                    return f.parentId == null;
+                }) : this.currentFolder.children;
+                files.forEach(function (file) {
+                    _this2.localFiles.splice(file.index, 1, file);
+                });
+                this.localFiles.sort(function (a, b) {
+                    return a.index - b.index;
+                });
+                this.oldFiles = [].concat(this.files);
+            }.bind(this), 800);
         },
         updateFiles: function updateFiles(file) {
             this.swap(file, this.draggedFile);
@@ -14251,10 +14276,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.addSelectedFile(e.file);
         },
         addListeners: function addListeners() {
-            var _this2 = this;
+            var _this3 = this;
 
             document.addEventListener("click", function () {
-                _this2.clearSelectedFileList();
+                _this3.clearSelectedFileList();
             });
         },
         contextmenu: function contextmenu(file) {
@@ -14296,31 +14321,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var blank = this.localFiles.find(function (f) {
                 return f.index >= numBlocksPerLine && f.blank && mod == f.index % numBlocksPerLine;
             });
-            var that = this;
             setTimeout(function () {
                 block.style.opacity = 0;
-                that.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(file.index);
-            }, 50);
+                this.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(file.index);
+                var parent = this.files.find(function (f) {
+                    return f.id == file.parentId;
+                });
+                if (parent) {
+                    var index = parent.children.findIndex(function (f) {
+                        return f.id == file.id;
+                    });
+                    parent.children.splice(index, 1);
+                }
+                if (file.children.length > 0) {}
+            }.bind(this), 50);
             this.swap(file, blank);
+        },
+        dblclick: function dblclick(file) {
+            if (file.children != null) {
+                this.currentFolder = file;
+                this.loadLocalFiles();
+            }
         }
     },
     watch: {
         files: function files() {
-            var _this3 = this;
+            var _this4 = this;
 
             if (this.files.length > this.oldFiles.length) {
                 var newFiles = this.files.filter(function (file) {
-                    return _this3.oldFiles.indexOf(file) == -1;
+                    return _this4.oldFiles.indexOf(file) == -1;
                 });
                 newFiles.forEach(function (file) {
-                    _this3.localFiles.splice(file.index, 1, file);
+                    _this4.localFiles.splice(file.index, 1, file);
                 });
             } else {
                 var deletedFiles = this.oldFiles.filter(function (file) {
-                    return _this3.files.indexOf(file) == -1;
+                    return _this4.files.indexOf(file) == -1;
                 });
                 deletedFiles.forEach(function (file) {
-                    _this3.deleteFile(file);
+                    _this4.deleteFile(file);
                 });
             }
             this.oldFiles = [].concat(this.files);
@@ -14417,7 +14457,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.v-exp-block[data-v-205ab8f7],\n.v-exp-file[data-v-205ab8f7],\n.v-exp-blank[data-v-205ab8f7] {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file[data-v-205ab8f7] {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.6s;\n}\n.v-exp-file p[data-v-205ab8f7] {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank[data-v-205ab8f7] {\n  border: none;\n}\n.v-exp-file-hover[data-v-205ab8f7],\n.v-exp-file-selected[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected[data-v-205ab8f7] {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled[data-v-205ab8f7] {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled[data-v-205ab8f7] {\n  opacity: 0.2;\n}\n.v-file-icon[data-v-205ab8f7] {\n  margin: auto;\n  position: relative;\n  display: block;\n  top: 15px;\n}\n.v-exp-file-uploading[data-v-205ab8f7] {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span[data-v-205ab8f7] {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.v-exp-fade-enter-active[data-v-205ab8f7],\n.v-exp-fade-leave-active[data-v-205ab8f7] {\n  transition: opacity 0.5s;\n}\n.v-exp-fade-enter[data-v-205ab8f7],\n.v-exp-fade-leave-to[data-v-205ab8f7] {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.v-exp-block[data-v-205ab8f7],\n.v-exp-file[data-v-205ab8f7],\n.v-exp-blank[data-v-205ab8f7] {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file[data-v-205ab8f7] {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.85s ease-in-out, opacity 0.5s ease-in-out;\n}\n.v-exp-file p[data-v-205ab8f7] {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank[data-v-205ab8f7] {\n  border: none;\n}\n.v-exp-file-hover[data-v-205ab8f7],\n.v-exp-file-selected[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected[data-v-205ab8f7] {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled[data-v-205ab8f7] {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled[data-v-205ab8f7] {\n  opacity: 0.2;\n}\n.v-file-icon[data-v-205ab8f7] {\n  margin: auto;\n  position: relative;\n  display: block;\n  top: 15px;\n}\n.v-exp-file-uploading[data-v-205ab8f7] {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span[data-v-205ab8f7] {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.v-exp-fade-enter-active[data-v-205ab8f7],\n.v-exp-fade-leave-active[data-v-205ab8f7] {\n  transition: opacity 0.5s;\n}\n.v-exp-fade-enter[data-v-205ab8f7],\n.v-exp-fade-leave-to[data-v-205ab8f7] {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -14433,6 +14473,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fortawesome_free_regular_svg_icons__ = __webpack_require__(27);
+//
 //
 //
 //
@@ -14543,6 +14584,9 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library *
         cancelUpload: function cancelUpload() {
             this.file.uploading = false;
             this.$emit('uploadCanceled', this.file);
+        },
+        dblclick: function dblclick() {
+            this.$emit('dblclick', this.file);
         }
     },
     computed: {
@@ -14722,15 +14766,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }));
         },
         addListeners: function addListeners() {
-            var that = this;
             document.addEventListener("hideAllContextMenu", function (e) {
-                if (e.detail._uid !== that._uid) {
-                    that.hide();
+                if (e.detail._uid !== this._uid) {
+                    this.hide();
                 }
-            });
+            }.bind(this));
             document.addEventListener("mousedown", function () {
-                that.hide();
-            });
+                this.hide();
+            }.bind(this));
         },
         hide: function hide() {
             this.$emit('update:show', false);
@@ -15841,7 +15884,8 @@ var render = function() {
         },
         mouseleave: function($event) {
           _vm.showCancelMessage = false
-        }
+        },
+        dblclick: _vm.dblclick
       }
     },
     [
@@ -15976,7 +16020,8 @@ var render = function() {
                 return _vm.click($event)
               },
               contextmenu: _vm.contextmenu,
-              uploadCanceled: _vm.uploadCanceled
+              uploadCanceled: _vm.uploadCanceled,
+              dblclick: _vm.dblclick
             }
           })
         })

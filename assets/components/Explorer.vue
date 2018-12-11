@@ -4,7 +4,7 @@
         <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
-                @contextmenu="contextmenu" @uploadCanceled="uploadCanceled">
+                @contextmenu="contextmenu" @uploadCanceled="uploadCanceled" @dblclick="dblclick">
             </v-file>
         </transition-group>
     </div>
@@ -12,7 +12,7 @@
 <script>
 
 import FileComponent from './File.vue'
-import File, {generateBlankFile} from '../js/file'
+import {generateBlankFile} from '../js/file'
 
 export default {
     data() {
@@ -21,7 +21,8 @@ export default {
             draggedFile: null,
             selectedFiles: [],
             localFiles: [],
-            oldFiles: []
+            oldFiles: [],
+            currentFolder: null
         }
     },
     props: {
@@ -49,26 +50,41 @@ export default {
         }
     },
     mounted() {
-		const that = this;
-		that.id += ('v-explorer-container_' + Math.floor((Math.random() * 1000) + 1));
+		this.id += ('v-explorer-container_' + Math.floor((Math.random() * 1000) + 1));
 		document.addEventListener("DOMContentLoaded", function(event) {			
-			that.addListeners();
-			that.loadLocalFiles();
-		});			
+            this.addListeners();
+            this.loadChildren();
+			this.loadLocalFiles();
+		}.bind(this));			
     },
     methods: {
+        loadChildren() {
+            this.files.forEach(file => {
+                file.children = this.files.filter(f => f.parentId == file.id);
+            });
+        },
         loadLocalFiles() {
             //create blank 'files'
-			const numBlocks = this.getNumberOfBlocks();
-            for (let x = 0; x <= numBlocks; x++){
-                this.localFiles.push(generateBlankFile(x));
-            }
-            //add the real files to the list
-            this.files.forEach(file => {
-                this.localFiles.splice(file.index, 1, file);
+            this.localFiles = this.localFiles.filter(f => {//remove existing files
+                return f.blank;
             });
-            this.localFiles.sort((a, b) => a.index - b.index);
-            this.oldFiles = this.oldFiles.concat(this.files);
+            setTimeout(function () {
+                this.localFiles = [];
+            }.bind(this), 600);
+
+            setTimeout(function () {
+                const numBlocks = this.getNumberOfBlocks();
+                for (let x = 0; x <= numBlocks; x++){
+                    this.localFiles.push(generateBlankFile(x));
+                }
+                //add the real files to the list, if you are inside a folder, it will show only its files
+                const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
+                files.forEach(file => {
+                    this.localFiles.splice(file.index, 1, file);
+                });
+                this.localFiles.sort((a, b) => a.index - b.index);
+                this.oldFiles = [].concat(this.files);
+            }.bind(this), 800);
         },
         updateFiles(file) {
             this.swap(file, this.draggedFile);
@@ -139,12 +155,24 @@ export default {
 			const mod = file.index % numBlocksPerLine;
 			
 			const blank = this.localFiles.find(f => f.index >= numBlocksPerLine && f.blank && mod == (f.index % numBlocksPerLine));
-			const that = this;
-			setTimeout(() => {
+			setTimeout(function() {
 				block.style.opacity = 0;
-				that.localFiles[file.index] = generateBlankFile(file.index);
-			}, 50);
+                this.localFiles[file.index] = generateBlankFile(file.index);
+                const parent = this.files.find(f => f.id == file.parentId);
+                if(parent) {
+                    const index = parent.children.findIndex(f => f.id == file.id);
+                    parent.children.splice(index, 1);
+                }
+                if(file.children.length > 0){
+                }
+            }.bind(this), 50);
 			this.swap(file, blank);
+        },
+        dblclick(file) {
+            if(file.children != null) {
+                this.currentFolder = file;
+                this.loadLocalFiles();
+            }
         }
     },
     watch: {

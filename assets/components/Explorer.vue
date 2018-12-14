@@ -1,6 +1,7 @@
 
 <template>
     <div :id="id" class="v-exp-container" @drop.prevent="drop" :style="{width: width, height: height}">
+        <v-breadcrumb :path="path"></v-breadcrumb>
         <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
@@ -11,8 +12,10 @@
 </template>
 <script>
 
-import FileComponent from './File.vue'
+import vFile from './File.vue'
+import vBreadcrumb from './Breadcrumb.vue'
 import {generateBlankFile} from '../js/file'
+import Breadcrumb from '../js/breadcrumb'
 
 export default {
     data() {
@@ -22,7 +25,8 @@ export default {
             selectedFiles: [],
             localFiles: [],
             oldFiles: [],
-            currentFolder: null
+            currentFolder: null,
+            path: [new Breadcrumb('/', null)]
         }
     },
     props: {
@@ -171,6 +175,7 @@ export default {
         dblclick(file) {
             if(file.children != null) {
                 this.currentFolder = file;
+                this.path.push(new Breadcrumb(file.name, file));
                 this.loadLocalFiles();
             }
         }
@@ -192,7 +197,8 @@ export default {
         }
     },
     components: {
-        'v-file': FileComponent
+        vFile,
+        vBreadcrumb
     }
 }
 </script>

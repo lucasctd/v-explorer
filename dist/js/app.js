@@ -2538,7 +2538,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Explorer__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Explorer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Explorer__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__file__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__option__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__option__ = __webpack_require__(36);
 
 
 
@@ -14028,7 +14028,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(16)
 /* template */
-var __vue_template__ = __webpack_require__(29)
+var __vue_template__ = __webpack_require__(35)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -14147,7 +14147,10 @@ module.exports = function listToStyles (parentId, list) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__File_vue__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__File_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__File_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__js_file__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Breadcrumb_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Breadcrumb_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Breadcrumb_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__js_file__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__js_breadcrumb__ = __webpack_require__(34);
 //
 //
 //
@@ -14159,6 +14162,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
+
 
 
 
@@ -14172,7 +14178,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selectedFiles: [],
             localFiles: [],
             oldFiles: [],
-            currentFolder: null
+            currentFolder: null,
+            path: [new __WEBPACK_IMPORTED_MODULE_3__js_breadcrumb__["a" /* default */]('/', null)]
         };
     },
 
@@ -14234,7 +14241,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 var numBlocks = this.getNumberOfBlocks();
                 for (var x = 0; x <= numBlocks; x++) {
-                    this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(x));
+                    this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_2__js_file__["b" /* generateBlankFile */])(x));
                 }
                 //add the real files to the list, if you are inside a folder, it will show only its files
                 var files = this.currentFolder == null ? this.files.filter(function (f) {
@@ -14323,7 +14330,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             setTimeout(function () {
                 block.style.opacity = 0;
-                this.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_1__js_file__["b" /* generateBlankFile */])(file.index);
+                this.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_2__js_file__["b" /* generateBlankFile */])(file.index);
                 var parent = this.files.find(function (f) {
                     return f.id == file.parentId;
                 });
@@ -14340,6 +14347,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         dblclick: function dblclick(file) {
             if (file.children != null) {
                 this.currentFolder = file;
+                this.path.push(new __WEBPACK_IMPORTED_MODULE_3__js_breadcrumb__["a" /* default */](file.name, file));
                 this.loadLocalFiles();
             }
         }
@@ -14367,7 +14375,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     components: {
-        'v-file': __WEBPACK_IMPORTED_MODULE_0__File_vue___default.a
+        vFile: __WEBPACK_IMPORTED_MODULE_0__File_vue___default.a,
+        vBreadcrumb: __WEBPACK_IMPORTED_MODULE_1__Breadcrumb_vue___default.a
     }
 });
 
@@ -15986,6 +15995,168 @@ if (false) {
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(30)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(32)
+/* template */
+var __vue_template__ = __webpack_require__(33)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-27ef61be"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "assets/components/Breadcrumb.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-27ef61be", Component.options)
+  } else {
+    hotAPI.reload("data-v-27ef61be", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(31);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("13849058", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27ef61be\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Breadcrumb.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27ef61be\",\"scoped\":true,\"hasInlineConfig\":true}!../../node_modules/stylus-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Breadcrumb.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.v-exp-list-enter[data-v-27ef61be],\n.v-exp-list-leave-to[data-v-27ef61be] {\n  opacity: 0;\n  transform: translateY(30px);\n}\n.v-exp-list-leave-active[data-v-27ef61be] {\n  position: absolute;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        path: {
+            required: true,
+            type: Array
+        }
+    },
+    mounted: function mounted() {},
+
+    methods: {}
+});
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "transition-group",
+    { attrs: { name: "v-exp-list", tag: "span" } },
+    _vm._l(_vm.path, function(item) {
+      return _c("span", { key: item.name }, [_vm._v(_vm._s(item.name))])
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-27ef61be", module.exports)
+  }
+}
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * BreadcrumbItem class
+ * @author Lucas Reis <lucas@programmer.com.br>
+ */
+var BreadcrumbItem = function BreadcrumbItem(name, folder) {
+    _classCallCheck(this, BreadcrumbItem);
+
+    this.name = name;
+    this.folder = folder;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (BreadcrumbItem);
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -16004,6 +16175,8 @@ var render = function() {
       }
     },
     [
+      _c("v-breadcrumb", { attrs: { path: _vm.path } }),
+      _vm._v(" "),
       _c(
         "transition-group",
         { attrs: { name: "v-exp-list", tag: "div" } },
@@ -16041,7 +16214,7 @@ if (false) {
 }
 
 /***/ }),
-/* 30 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

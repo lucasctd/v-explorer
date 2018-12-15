@@ -50,15 +50,14 @@ export default {
             }));
         },
         addListeners() {
-            const that = this;
-            document.addEventListener("hideAllContextMenu", (e) => {
-                if(e.detail._uid !== that._uid){
-                    that.hide();
+            document.addEventListener("hideAllContextMenu", function (e) {
+                if(e.detail._uid !== this._uid){
+                    this.hide();
                 }
-            });
-            document.addEventListener("mousedown", () => {
-                that.hide();
-            });
+            }.bind(this));
+            document.addEventListener("mousedown", function () {
+                this.hide();
+            }.bind(this));
         },
         hide() {
             this.$emit('update:show', false);

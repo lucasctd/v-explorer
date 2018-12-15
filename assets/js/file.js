@@ -3,14 +3,15 @@
  * @author Lucas Reis <lucas@programmer.com.br>
  */
 export default class File {
-    constructor(id, name, index, icon = "file", blank = false, uploading = false, progress = 0) {
+    constructor(id, name, index, icon = "file", parentId = null, uploading = false, progress = 0) {
         this.id = id;
         this.name = name;
         this.index = index;
         this.icon = icon;
-        this.blank = blank;
+        this.parentId = parentId;
         this.uploading = uploading;
         this.progress = progress;
+        this.children = [];
     }
 }
 

@@ -2,10 +2,11 @@
 <template>
     <div :id="file.id" :class="{'v-exp-file': !file.blank, 'v-exp-blank': file.blank}" draggable="true" 
         @drop.prevent="drop" @dragstart="dragstart" @dragend="dragend" @dragenter.prevent="dragenter" @dragleave="dragleave" @dragover.prevent="dragover"
-        @contextmenu.prevent="contextmenu" @click.stop="click" @mouseenter="showCancelMessage = true" @mouseleave="showCancelMessage = false">
+        @contextmenu.prevent="contextmenu" @click.stop="click" @mouseenter="showCancelMessage = true" @mouseleave="showCancelMessage = false" @dblclick="dblclick">
 
         <!-- <fa-icon :icon="file.icon"></fa-icon> -->
         <fa-icon v-if="!file.blank" :icon="['far', file.icon]" size="3x" class="v-file-icon"></fa-icon>
+        
         <p v-if="!file.blank" :title="file.name">{{_fileName}}</p>
         <!-- when hovering a file/field -->
         <div class="v-exp-file-hover" :class="{'v-exp-file-hover-enabled': draggingover}"></div>
@@ -105,6 +106,9 @@ export default {
         cancelUpload() {
             this.file.uploading = false;
             this.$emit('uploadCanceled', this.file);
+        },
+        dblclick() {
+            this.$emit('dblclick', this.file);
         }
     },
     computed: {
@@ -150,7 +154,7 @@ export default {
         @extends .v-exp-block
         border 1px solid gray
         box-shadow: 5px 5px 25px -5px rgba(0,0,0,1)
-		transition: all .6s;
+		transition: all .85s ease-in-out, opacity .5s ease-in-out;
         p {
             position: relative;
             z-index: 20;

@@ -10,6 +10,7 @@ new Vue({
     data: {
         files: [
             new File(1, "File 1 wqewq weqeq www", 0, 'folder'),
+            new File(4, "Folder 4", 2, 'folder'),
             new File(2, "File 2 qwew eeeee", 1),
             new File(3, "File 3", 7)
         ],
@@ -22,6 +23,7 @@ new Vue({
             return !file.blank;
         }));
         this.files[1].parentId = 1;
+        this.files[3].parentId = 4;
     },
     methods: {
         contextmenu(e) {

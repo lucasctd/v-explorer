@@ -1,7 +1,7 @@
 <template>
 	<div class="v-exp-breadcrumb">
 		<transition-group name="v-exp-list" tag="span">
-			<a href="javascript:void(0)" v-for="item in path" :key="item.name">{{item.name}}</a>
+			<a href="javascript:void(0)" v-for="item in path" :key="item.name" @click="click(item.name)">{{item.name}}/</a>
 		</transition-group>
 	</div>
 </template>
@@ -14,15 +14,21 @@ export default {
             type: Array
         },
     },
-    mounted(){
+    mounted() {
     },
     methods: {
+        click(name) {
+            const index = this.path.map(p => p.name).indexOf(name);
+            if(index < (this.path.length - 1)) {
+                const l = this.path.slice(0, index + 1);
+                this.$emit('update:path', l);
+            }
+        }
     }
 }
 
 </script>
 <style lang="stylus" scoped>
-
 	.v-exp-breadcrumb {
 		display block !important
 		height 15px !important
@@ -30,8 +36,9 @@ export default {
 		position relative
 		top -16px
 		a {
+            transition: all .85s ease-in-out, opacity .5s ease-in-out;
 			text-decoration none
-			color gray
+			color #191970
 			cursor pointer
 			&:hover{
 				opacity .65

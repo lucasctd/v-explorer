@@ -1,7 +1,7 @@
 
 <template>
     <div :id="id" class="v-exp-container" @drop.prevent="drop" :style="{width: width, height: height}">
-        <v-breadcrumb :path="path"></v-breadcrumb>
+        <v-breadcrumb :path.sync="path"></v-breadcrumb>
         <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
@@ -26,7 +26,7 @@ export default {
             localFiles: [],
             oldFiles: [],
             currentFolder: null,
-            path: [new Breadcrumb('/', null)]
+            path: [new Breadcrumb('C:', null)]
         }
     },
     props: {
@@ -173,10 +173,8 @@ export default {
 			this.swap(file, blank);
         },
         dblclick(file) {
-            if(file.children != null) {
-                this.currentFolder = file;
+            if(file.children != null) {                
                 this.path.push(new Breadcrumb(file.name, file));
-                this.loadLocalFiles();
             }
         }
     },
@@ -194,6 +192,13 @@ export default {
                 });
             }
             this.oldFiles = [].concat(this.files);
+        },
+        path: {
+            handler(value) {
+                this.currentFolder = value[value.length - 1].folder;
+                this.loadLocalFiles();
+            },
+            deep: true
         }
     },
     components: {

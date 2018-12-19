@@ -2549,7 +2549,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('v-explorer', __WEBPACK_IM
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     data: {
-        files: [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1 wqewq weqeq www", 0, 'folder'), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](4, "Folder 4", 2, 'folder'), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2 qwew eeeee", 1), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 7)],
+        files: [],
         options: []
     },
     mounted: function mounted() {
@@ -2562,8 +2562,13 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         }, function (file) {
             return !file.blank;
         }));
-        this.files[1].parentId = 1;
-        this.files[3].parentId = 4;
+        setTimeout(function () {
+            this.files = [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "Folder 1", 0, 'folder'), new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2", 2, 'file', 1)];
+            setTimeout(function () {
+                this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "Folder 3", 1, 'folder'));
+                this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](4, "File 4", 7, 'file', 3));
+            }.bind(this), 5000);
+        }.bind(this), 3000);
     },
 
     methods: {
@@ -14355,8 +14360,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         files: function files() {
             var _this4 = this;
 
+            this.loadChildren();
+
+            //add the real files to the list, if you are inside a folder, it will show only its files
+            var files = this.currentFolder == null ? this.files.filter(function (f) {
+                return f.parentId == null;
+            }) : this.currentFolder.children;
             if (this.files.length > this.oldFiles.length) {
-                var newFiles = this.files.filter(function (file) {
+                var newFiles = files.filter(function (file) {
                     return _this4.oldFiles.indexOf(file) == -1;
                 });
                 newFiles.forEach(function (file) {
@@ -14364,7 +14375,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             } else {
                 var deletedFiles = this.oldFiles.filter(function (file) {
-                    return _this4.files.indexOf(file) == -1;
+                    return files.indexOf(file) == -1;
                 });
                 deletedFiles.forEach(function (file) {
                     _this4.deleteFile(file);

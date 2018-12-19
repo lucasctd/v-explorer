@@ -8,12 +8,7 @@ Vue.component('v-explorer', Explorer);
 new Vue({
     el: '#app',
     data: {
-        files: [
-            new File(1, "File 1 wqewq weqeq www", 0, 'folder'),
-            new File(4, "Folder 4", 2, 'folder'),
-            new File(2, "File 2 qwew eeeee", 1),
-            new File(3, "File 3", 7)
-        ],
+        files: [],
         options: []
     },
     mounted() {
@@ -22,8 +17,16 @@ new Vue({
         }, (file) => {
             return !file.blank;
         }));
-        this.files[1].parentId = 1;
-        this.files[3].parentId = 4;
+        setTimeout(function() {
+            this.files =  [
+                new File(1, "Folder 1", 0, 'folder'),
+                new File(2, "File 2", 2, 'file', 1),
+            ];
+            setTimeout(function() {
+                this.files.push(new File(3, "Folder 3", 1, 'folder'));
+                this.files.push(new File(4, "File 4", 7, 'file', 3));
+            }.bind(this), 5000);
+        }.bind(this), 3000);
     },
     methods: {
         contextmenu(e) {

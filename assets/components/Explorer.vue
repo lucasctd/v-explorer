@@ -180,18 +180,23 @@ export default {
     },
     watch: {
         files() {
+            this.loadChildren();
+
+            //add the real files to the list, if you are inside a folder, it will show only its files
+            const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
             if (this.files.length > this.oldFiles.length) {
-                let newFiles = this.files.filter(file => this.oldFiles.indexOf(file) == -1);
+                let newFiles = files.filter(file => this.oldFiles.indexOf(file) == -1);
                 newFiles.forEach(file => {
                     this.localFiles.splice(file.index, 1, file);
                 });
             } else {
-                let deletedFiles = this.oldFiles.filter(file => this.files.indexOf(file) == -1);
+                let deletedFiles = this.oldFiles.filter(file => files.indexOf(file) == -1);
                 deletedFiles.forEach(file => {
                     this.deleteFile(file);
                 });
             }
             this.oldFiles = [].concat(this.files);
+            //this.loadLocalFiles();
         },
         path: {
             handler(value) {

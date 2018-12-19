@@ -196,7 +196,6 @@ export default {
                 });
             }
             this.oldFiles = [].concat(this.files);
-            //this.loadLocalFiles();
         },
         path: {
             handler(value) {

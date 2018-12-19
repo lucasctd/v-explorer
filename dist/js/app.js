@@ -14382,7 +14382,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
             this.oldFiles = [].concat(this.files);
-            //this.loadLocalFiles();
         },
 
         path: {

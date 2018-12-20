@@ -193,12 +193,9 @@ export default {
             }
             this.oldFiles = [].concat(this.files);
         },
-        path: {
-            handler(value) {
-                this.currentFolder = value[value.length - 1].folder;
-                this.loadLocalFiles();
-            },
-            deep: true
+        path(value) {
+			this.currentFolder = value[value.length - 1].folder;
+			this.loadLocalFiles();
         }
     },
     components: {

@@ -7,7 +7,8 @@
         <!-- <fa-icon :icon="file.icon"></fa-icon> -->
         <fa-icon v-if="!file.blank" :icon="['far', file.icon]" size="3x" class="v-file-icon"></fa-icon>
         
-        <p v-if="!file.blank" :title="file.name">{{_fileName}}</p>
+        <p v-if="!file.blank && !renaming" :title="file.name" @click.stop="rename">{{_fileName}}</p>
+		<input v-if="!file.blank && renaming" ref="filename_input" type="text" class="v-exp-filename" v-model="file.name" @blur="onRenamed" @click.stop=""/>
         <!-- when hovering a file/field -->
         <div class="v-exp-file-hover" :class="{'v-exp-file-hover-enabled': draggingover}"></div>
          <!-- when selecting a file -->
@@ -43,7 +44,8 @@ export default {
             showCancelMessage: false,
             contextMenuTop: 0,
             contextMenuLeft: 0,
-            selected: false
+            selected: false,
+			renaming: false
         }
     },
     props: {
@@ -109,7 +111,17 @@ export default {
         },
         dblclick() {
             this.$emit('dblclick', this.file);
-        }
+        },
+		rename() {
+			this.renaming = true;
+			setTimeout(function() {
+				this.$refs.filename_input.focus();
+			}.bind(this), 200);
+		},
+		onRenamed() {
+			this.renaming = false;
+			this.$emit('file-rename', this.file);			
+		}
     },
     computed: {
         _fileName() {
@@ -142,6 +154,15 @@ export default {
     $red = #FF3030
     $block_height = 135px
     $block_width = 100px
+	
+	.text-position {
+		position: relative;
+		z-index: 20;
+		top: 30px;
+		text-align: center;
+		font-size: 12px;
+		font-family: Verdana, Georgia, Palatino;
+	}
 
     .v-exp-block {
         width $block_width
@@ -156,12 +177,7 @@ export default {
         box-shadow: 5px 5px 25px -5px rgba(0,0,0,1)
 		transition: all .85s ease-in-out, opacity .5s ease-in-out;
         p {
-            position: relative;
-            z-index: 20;
-            top: 30px;
-            text-align: center;
-            font-size: 12px;
-			font-family: Verdana, Georgia, Palatino;
+            @extends .text-position;
         }
     }
 
@@ -238,12 +254,21 @@ export default {
     }
 
     .v-exp-fade-enter-active, .v-exp-fade-leave-active {
-        transition: opacity .5s;
+        transition opacity .5s
     }
 
     .v-exp-fade-enter, .v-exp-fade-leave-to {
-        opacity: 0;
+        opacity 0
     }
+	
+	.v-exp-filename {
+		border 3px dashed gray;
+		width 90%
+		margin 0 auto
+		display table
+		top 38px
+		@extends .text-position;
+	}
 </style>
 
 

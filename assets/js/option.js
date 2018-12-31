@@ -13,3 +13,16 @@ export default class Option {
         this.visible = visible;
     }
 }
+
+class RenameOption extends Option {
+	constructor(name, click, visible = visibleFunc) {
+        super(name, click, visible);
+		this.renaming = false;
+    }	
+}
+
+const renameOption = new RenameOption('Rename', file => {	
+	this.renaming = true;
+});
+
+export {renameOption, RenameOption};

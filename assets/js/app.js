@@ -25,8 +25,8 @@ new Vue({
             setTimeout(function() {
                 this.files.push(new File(3, "Folder 3", 1, 'folder'));
                 this.files.push(new File(4, "File 4", 7, 'file', 3));
-            }.bind(this), 5000);
-        }.bind(this), 3000);
+            }.bind(this), 1000);
+        }.bind(this), 500);
     },
     methods: {
         contextmenu(e) {

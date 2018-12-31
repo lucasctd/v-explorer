@@ -2585,8 +2585,8 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             setTimeout(function () {
                 this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "Folder 3", 1, 'folder'));
                 this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](4, "File 4", 7, 'file', 3));
-            }.bind(this), 5000);
-        }.bind(this), 3000);
+            }.bind(this), 1000);
+        }.bind(this), 500);
     },
 
     methods: {
@@ -14629,7 +14629,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.v-exp-block[data-v-205ab8f7],\n.v-exp-file[data-v-205ab8f7],\n.v-exp-blank[data-v-205ab8f7] {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file[data-v-205ab8f7] {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.85s ease-in-out, opacity 0.5s ease-in-out;\n}\n.v-exp-file p[data-v-205ab8f7] {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-blank[data-v-205ab8f7] {\n  border: none;\n}\n.v-exp-file-hover[data-v-205ab8f7],\n.v-exp-file-selected[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected[data-v-205ab8f7] {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled[data-v-205ab8f7] {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled[data-v-205ab8f7] {\n  opacity: 0.2;\n}\n.v-file-icon[data-v-205ab8f7] {\n  margin: auto;\n  position: relative;\n  display: block;\n  top: 15px;\n}\n.v-exp-file-uploading[data-v-205ab8f7] {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span[data-v-205ab8f7] {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.v-exp-fade-enter-active[data-v-205ab8f7],\n.v-exp-fade-leave-active[data-v-205ab8f7] {\n  transition: opacity 0.5s;\n}\n.v-exp-fade-enter[data-v-205ab8f7],\n.v-exp-fade-leave-to[data-v-205ab8f7] {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.text-position[data-v-205ab8f7],\n.v-exp-file p[data-v-205ab8f7],\n.v-exp-filename[data-v-205ab8f7] {\n  position: relative;\n  z-index: 20;\n  top: 30px;\n  text-align: center;\n  font-size: 12px;\n  font-family: Verdana, Georgia, Palatino;\n}\n.v-exp-block[data-v-205ab8f7],\n.v-exp-file[data-v-205ab8f7],\n.v-exp-blank[data-v-205ab8f7] {\n  width: 100px;\n  height: 135px;\n  margin: 10px 5px;\n  position: relative;\n}\n.v-exp-file[data-v-205ab8f7] {\n  border: 1px solid #808080;\n  box-shadow: 5px 5px 25px -5px #000;\n  transition: all 0.85s ease-in-out, opacity 0.5s ease-in-out;\n}\n.v-exp-blank[data-v-205ab8f7] {\n  border: none;\n}\n.v-exp-file-hover[data-v-205ab8f7],\n.v-exp-file-selected[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  display: block;\n  opacity: 0;\n  background-color: #ffa500;\n  transition: opacity 0.7s;\n  position: absolute;\n  top: 0px;\n  z-index: 10;\n}\n.v-exp-file-selected[data-v-205ab8f7] {\n  background-color: #191970;\n}\n.v-exp-file-selected-enabled[data-v-205ab8f7] {\n  opacity: 0.5;\n}\n.v-exp-file-hover-enabled[data-v-205ab8f7] {\n  opacity: 0.2;\n}\n.v-file-icon[data-v-205ab8f7] {\n  margin: auto;\n  position: relative;\n  display: block;\n  top: 15px;\n}\n.v-exp-file-uploading[data-v-205ab8f7] {\n  width: 100%;\n  position: absolute;\n  bottom: 0;\n  background-color: #191970;\n  opacity: 0.7;\n  transition: height 0.7s;\n  z-index: 10;\n}\n.v-exp-file-uploading span[data-v-205ab8f7] {\n  font-size: 24px;\n  color: #fff;\n  font-weight: bold;\n  display: table;\n  margin: 0 auto;\n  transition: margin 1s;\n}\n.v-exp-file-abort-uploading[data-v-205ab8f7] {\n  width: 100%;\n  height: 100%;\n  bottom: 0;\n  position: absolute;\n  cursor: pointer;\n  background-color: #ff3030;\n  z-index: 12;\n  opacity: 0.75;\n  font-weight: bold;\n  color: #fff;\n  text-align: center;\n  line-height: 135px;\n}\n.v-exp-fade-enter-active[data-v-205ab8f7],\n.v-exp-fade-leave-active[data-v-205ab8f7] {\n  transition: opacity 0.5s;\n}\n.v-exp-fade-enter[data-v-205ab8f7],\n.v-exp-fade-leave-to[data-v-205ab8f7] {\n  opacity: 0;\n}\n.v-exp-filename[data-v-205ab8f7] {\n  border: 3px dashed #808080;\n  width: 90%;\n  margin: 0 auto;\n  display: table;\n  top: 38px;\n}\n", ""]);
 
 // exports
 
@@ -14645,6 +14645,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fortawesome_vue_fontawesome__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fortawesome_free_regular_svg_icons__ = __webpack_require__(27);
+//
 //
 //
 //
@@ -14690,7 +14691,8 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library *
             showCancelMessage: false,
             contextMenuTop: 0,
             contextMenuLeft: 0,
-            selected: false
+            selected: false,
+            renaming: false
         };
     },
 
@@ -14759,6 +14761,16 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library *
         },
         dblclick: function dblclick() {
             this.$emit('dblclick', this.file);
+        },
+        rename: function rename() {
+            this.renaming = true;
+            setTimeout(function () {
+                this.$refs.filename_input.focus();
+            }.bind(this), 200);
+        },
+        onRenamed: function onRenamed() {
+            this.renaming = false;
+            this.$emit('file-rename', this.file);
         }
     },
     computed: {
@@ -16673,10 +16685,49 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      !_vm.file.blank
-        ? _c("p", { attrs: { title: _vm.file.name } }, [
-            _vm._v(_vm._s(_vm._fileName))
-          ])
+      !_vm.file.blank && !_vm.renaming
+        ? _c(
+            "p",
+            {
+              attrs: { title: _vm.file.name },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  return _vm.rename($event)
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm._fileName))]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.file.blank && _vm.renaming
+        ? _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.file.name,
+                expression: "file.name"
+              }
+            ],
+            ref: "filename_input",
+            staticClass: "v-exp-filename",
+            attrs: { type: "text" },
+            domProps: { value: _vm.file.name },
+            on: {
+              blur: _vm.onRenamed,
+              click: function($event) {
+                $event.stopPropagation()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.file, "name", $event.target.value)
+              }
+            }
+          })
         : _vm._e(),
       _vm._v(" "),
       _c("div", {
@@ -16726,7 +16777,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n            Cancel?\n        ")]
+              [_vm._v("\n                Cancel?\n            ")]
             )
           : _vm._e()
       ]),
@@ -17026,6 +17077,14 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export renameOption */
+/* unused harmony export RenameOption */
+var _this2 = this;
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var visibleFunc = function visibleFunc(file) {
@@ -17048,6 +17107,29 @@ var Option = function Option(name, click) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Option);
+
+var RenameOption = function (_Option) {
+    _inherits(RenameOption, _Option);
+
+    function RenameOption(name, click) {
+        var visible = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : visibleFunc;
+
+        _classCallCheck(this, RenameOption);
+
+        var _this = _possibleConstructorReturn(this, (RenameOption.__proto__ || Object.getPrototypeOf(RenameOption)).call(this, name, click, visible));
+
+        _this.renaming = false;
+        return _this;
+    }
+
+    return RenameOption;
+}(Option);
+
+var renameOption = new RenameOption('Rename', function (file) {
+    _this2.renaming = true;
+});
+
+
 
 /***/ })
 /******/ ]);

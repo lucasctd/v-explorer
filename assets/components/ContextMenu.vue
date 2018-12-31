@@ -40,7 +40,7 @@ export default {
 			if(!this.file.blank) {
 				opt.click(this.file);
 			} else {
-				opt.click(null);
+				opt.click(this.file.index);
 			}            
             this.hide();
         },

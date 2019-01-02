@@ -69,7 +69,7 @@ export default {
         },
         drop(e) {
             this.draggingover = false
-            if(!e.dataTransfer.files[0]) {
+            if(e.dataTransfer.files.length === 0) {
                 this.$emit('drop', this.file);
             }
         },

@@ -107,7 +107,7 @@ export default {
         },
         cancelUpload() {
             this.file.uploading = false;
-            this.$emit('uploadCanceled', this.file);
+            this.$emit('upload-canceled', this.file);
         },
         dblclick() {
             this.$emit('dblclick', this.file);

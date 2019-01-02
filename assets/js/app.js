@@ -32,6 +32,12 @@ new Vue({
         contextmenu(e) {
         },
         uploadCanceled(file) {
+            console.log('uploadCanceled');
+            console.log(file);
+        },
+        fileRename(file) {
+            console.log('fileRename');
+            console.log(file);
         },
         drop(files) {
             const ids = this.files.map(f => f.id);

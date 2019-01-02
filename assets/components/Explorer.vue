@@ -5,7 +5,7 @@
         <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
-                @contextmenu="contextmenu" @uploadCanceled="uploadCanceled" @dblclick="dblclick">
+                @contextmenu="contextmenu" @upload-canceled="uploadCanceled" @file-rename="fileRename" @dblclick="dblclick">
             </v-file>
         </transition-group>
     </div>
@@ -142,8 +142,11 @@ export default {
             this.selectedFiles = [];
         },
         uploadCanceled(file) {
-			this.deleteFile(file);		
+			this.deleteFile(file);
             this.$emit('upload-canceled', file);
+        },
+        fileRename(file) {
+            this.$emit('file-rename', file);
         },
         drop(e) {
             if(e.dataTransfer.files.length > 0) {
@@ -152,7 +155,7 @@ export default {
         },
         deleteFile(file) {
             const containerWidth = document.getElementById(this.id).offsetWidth;
-			const block = document.getElementById(file.id);
+            const block = document.getElementById(file.id);
 			const blockStyle = getComputedStyle(block);
 			const blockWidth = parseInt(blockStyle.marginLeft) + parseInt(blockStyle.marginRight) + block.clientWidth;
 			const numBlocksPerLine = Math.floor(containerWidth / blockWidth);
@@ -162,13 +165,6 @@ export default {
 			setTimeout(function() {
 				block.style.opacity = 0;
                 this.localFiles[file.index] = generateBlankFile(file.index);
-                const parent = this.files.find(f => f.id == file.parentId);
-                if(parent) {
-                    const index = parent.children.findIndex(f => f.id == file.id);
-                    parent.children.splice(index, 1);
-                }
-                if(file.children.length > 0){
-                }
             }.bind(this), 50);
 			this.swap(file, blank);
         },
@@ -181,16 +177,17 @@ export default {
     watch: {
         files() {
             this.loadChildren();
-
             //add the real files to the list, if you are inside a folder, it will show only its files
-            const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
             if (this.files.length > this.oldFiles.length) {
+                const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
                 let newFiles = files.filter(file => this.oldFiles.indexOf(file) == -1);
                 newFiles.forEach(file => {
                     this.localFiles.splice(file.index, 1, file);
                 });
             } else {
-                let deletedFiles = this.oldFiles.filter(file => files.indexOf(file) == -1);
+                const parentId = this.currentFolder == null ? null : this.currentFolder.id;
+                const files = this.oldFiles.filter(f => f.parentId == parentId);
+                let deletedFiles = files.filter(file => this.files.indexOf(file) == -1);
                 deletedFiles.forEach(file => {
                     this.deleteFile(file);
                 });

@@ -20,10 +20,12 @@ new Vue({
         setTimeout(function() {
             this.files =  [
                 new File(1, "Folder 1", 0, 'folder'),
+				new File(10, "Folder 1", 10, 'folder'),
+				new File(11, "Folder 1", 11, 'folder'),
                 new File(2, "File 2", 2, 'file', 1),
             ];
             setTimeout(function() {
-                this.files.push(new File(3, "Folder 3", 1, 'folder'));
+                this.files.push(new File(3, "Folder 3", 6, 'folder'));
                 this.files.push(new File(4, "File 4", 7, 'file', 3));
             }.bind(this), 1000);
         }.bind(this), 500);
@@ -47,7 +49,7 @@ new Vue({
             }
             let x = 0;
             let file = new File(fakeId, files[0].name, 4);
-            file.uploading = true;
+            //file.uploading = true;
             this.files.push(file);
             /*let interval = setInterval(() => {
                 x+=5;
@@ -57,6 +59,9 @@ new Vue({
                 }
             }, 1000);*/
         },
+		move(e) {
+			console.log(e)
+		},
         genFakeId() {
             return Math.floor((Math.random() * 1000) + 1);
         }

@@ -151,7 +151,9 @@ export default {
         drop(e) {
             if(e.dataTransfer.files.length > 0) {
                 this.$emit('drop', e.dataTransfer.files);
-            }
+            } else {
+				this.$emit('move', this.draggedFile);
+			}
         },
         deleteFile(file) {
             const containerWidth = document.getElementById(this.id).offsetWidth;
@@ -182,7 +184,14 @@ export default {
                 const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
                 let newFiles = files.filter(file => this.oldFiles.indexOf(file) == -1);
                 newFiles.forEach(file => {
-                    this.localFiles.splice(file.index, 1, file);
+                    //this.localFiles.splice(file.index, 1, file);
+					console.log(file)
+					const id = this.localFiles.find(f => f.index == file.index).id;
+					if(!id) return;
+					console.log(id)
+					const block = document.getElementById(id);
+                    this.localFiles[file.index] = file;//.splice(file.index, 1, file);
+					block.opacity = 1;
                 });
             } else {
                 const parentId = this.currentFolder == null ? null : this.currentFolder.id;

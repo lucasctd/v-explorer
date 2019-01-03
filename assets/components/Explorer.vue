@@ -184,14 +184,7 @@ export default {
                 const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
                 let newFiles = files.filter(file => this.oldFiles.indexOf(file) == -1);
                 newFiles.forEach(file => {
-                    //this.localFiles.splice(file.index, 1, file);
-					console.log(file)
-					const id = this.localFiles.find(f => f.index == file.index).id;
-					if(!id) return;
-					console.log(id)
-					const block = document.getElementById(id);
-                    this.localFiles[file.index] = file;//.splice(file.index, 1, file);
-					block.opacity = 1;
+                    this.localFiles.splice(file.index, 1, file);
                 });
             } else {
                 const parentId = this.currentFolder == null ? null : this.currentFolder.id;

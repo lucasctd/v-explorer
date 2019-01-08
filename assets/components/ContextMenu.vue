@@ -1,7 +1,7 @@
 <template>
     <transition name="v-exp-context-menu-fade">
         <div v-if="show" class="v-exp-context-menu" :style="{top: top + 'px', left: left + 'px'}">
-            <div v-for="opt in options" v-if="opt.visible(file)" ref="opt" :key="opt.name" 
+            <div v-for="opt in visible_options" ref="opt" :key="opt.name" 
 				class="v-exp-context-menu-option" @click.stop="click($event, opt)">
                 {{opt.name}}
             </div>
@@ -41,7 +41,8 @@ export default {
 				opt.click(this.file);
 			} else {
 				opt.click(this.file.index);
-			}            
+            }
+            this.$emit('click-option', opt);
             this.hide();
         },
         hideAllContextMenu() {
@@ -63,6 +64,11 @@ export default {
             this.$emit('update:show', false);
         }
     },
+    computed: {
+        visible_options() {
+            return this.options.filter(function(o) {return o.visible(this.file)}.bind(this));
+        }
+    },
     watch: {
         show(val) {
             if(val){
@@ -74,9 +80,9 @@ export default {
                             while(el.clientHeight > 30) {
                                 el.style.fontSize = --defaultFontSize + 'px';
                             }
-                        });					
+                        });
                     }
-				});				
+				});
             }
         }
     }

@@ -25,7 +25,7 @@
                 Cancel?
             </div>
         </transition>
-        <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft"></v-context-menu>
+        <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft" @click-option="checkIfRename"></v-context-menu>
     </div>
 </template>
 <script>
@@ -33,6 +33,7 @@ import ContextMenu from './ContextMenu.vue'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {far} from '@fortawesome/free-regular-svg-icons'
+import {RenameOption} from '../js/option'
 
 library.add(far)
 
@@ -45,7 +46,7 @@ export default {
             contextMenuTop: 0,
             contextMenuLeft: 0,
             selected: false,
-			renaming: false
+            renaming: false
         }
     },
     props: {
@@ -60,7 +61,7 @@ export default {
     mounted() {
         this.addListeners();
     },
-    methods: {
+    methods: {        
         dragenter() {
             this.draggingover = true
         },
@@ -121,7 +122,12 @@ export default {
 		onRenamed() {
 			this.renaming = false;
 			this.$emit('file-rename', this.file);			
-		}
+        },
+        checkIfRename(opt) {
+            if(opt instanceof RenameOption) {
+                this.rename();
+            }
+        }
     },
     computed: {
         _fileName() {

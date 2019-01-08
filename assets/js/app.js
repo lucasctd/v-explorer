@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Explorer from '../components/Explorer'
 import File from "./file"
-import Option from './option'
+import Option, {renameOption} from './option'
 
 Vue.component('v-explorer', Explorer);
 
@@ -17,6 +17,7 @@ new Vue({
         }, (file) => {
             return !file.blank;
         }));
+        this.options.push(renameOption);
         setTimeout(function() {
             this.files =  [
                 new File(1, "Folder 1", 0, 'folder'),

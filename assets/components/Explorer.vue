@@ -105,8 +105,10 @@ export default {
 		},
         dragstart(file) {
             this.draggedFile = file;
+            this.$emit('dragstart', file);
         },
         dragend(file) {
+            this.$emit('dragend', file);
         },
         getNumberOfBlocks() {
 			const el = document.getElementById(this.id);
@@ -116,6 +118,7 @@ export default {
         },
         click(e){
             this.addSelectedFile(e.file);
+            this.$emit('select', e.file);
         },
         addListeners() {
             document.addEventListener("click", () => {
@@ -174,6 +177,7 @@ export default {
             if(file.children != null) {                
                 this.path.push(new Breadcrumb(file.name, file));
             }
+            this.$emit('dblclick', file);
         }
     },
     watch: {

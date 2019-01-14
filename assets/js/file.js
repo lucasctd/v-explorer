@@ -12,6 +12,7 @@ export default class File {
         this.uploading = uploading;
         this.progress = progress;
         this.children = [];
+        this.dir = false;
     }
 }
 

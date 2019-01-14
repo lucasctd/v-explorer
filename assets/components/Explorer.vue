@@ -174,7 +174,7 @@ export default {
 			this.swap(file, blank);
         },
         dblclick(file) {
-            if(file.children != null) {                
+            if(file.dir) {
                 this.path.push(new Breadcrumb(file.name, file));
             }
             this.$emit('dblclick', file);

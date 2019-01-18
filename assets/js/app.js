@@ -18,18 +18,18 @@ new Vue({
             return !file.blank;
         }));
         this.options.push(renameOption);
+        this.files =  [
+            new File(1, "File 1", 10, 'file'),
+        ];
         setTimeout(function() {
-            this.files =  [
-                new File(1, "Folder 1", 0, 'folder'),
-				new File(10, "Folder 1", 10, 'folder'),
-				new File(11, "Folder 1", 11, 'folder'),
-                new File(2, "File 2", 2, 'file', 1),
-            ];
+            this.files.push(new File(2, "File 2", 8, 'file'));
             setTimeout(function() {
-                this.files.push(new File(3, "Folder 3", 6, 'folder'));
-                this.files.push(new File(4, "File 4", 7, 'file', 3));
-            }.bind(this), 1000);
-        }.bind(this), 500);
+                this.files.push(new File(3, "File 3", 4, 'file'));
+            }.bind(this), 2000);
+            setTimeout(function() {
+                this.files.push(new File(4, "File 4", 0, 'file'));
+            }.bind(this), 4000);
+        }.bind(this), 3000);
     },
     methods: {
         contextmenu(e) {

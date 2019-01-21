@@ -2643,16 +2643,17 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             return !file.blank;
         }));
         this.options.push(__WEBPACK_IMPORTED_MODULE_3__option__["c" /* renameOption */]);
-        this.files = [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "File 1", 10, 'file')];
+        this.files = [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "Folder", 10, 'folder')];
+        this.files[0].dir = true;
         setTimeout(function () {
-            this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2", 8, 'file'));
+            this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2", 8, 'file', 1));
             setTimeout(function () {
-                this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4, 'file'));
+                this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4, 'file', 1));
             }.bind(this), 2000);
             setTimeout(function () {
                 this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](4, "File 4", 0, 'file'));
-            }.bind(this), 4000);
-        }.bind(this), 3000);
+            }.bind(this), 1000);
+        }.bind(this), 1000);
     },
 
     methods: {
@@ -14476,6 +14477,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                             case 3:
                                 //wait for the animation ends
                                 this.localFiles = [];
+                                _context.next = 6;
+                                return this.sleep(.2);
+
+                            case 6:
+                                //wait for the animation ends
+                                this.localFiles = [];
                                 numBlocks = this.getNumberOfBlocks();
 
                                 for (x = 0; x <= numBlocks; x++) {
@@ -14489,12 +14496,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 files.forEach(function (file) {
                                     _this2.localFiles.splice(file.index, 1, file);
                                 });
+                                _context.next = 13;
+                                return this.sleep(.1);
+
+                            case 13:
                                 this.localFiles.sort(function (a, b) {
                                     return a.index - b.index;
                                 });
                                 this.oldFiles = [].concat(this.files);
 
-                            case 10:
+                            case 15:
                             case 'end':
                                 return _context.stop();
                         }
@@ -14593,12 +14604,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                     return f.index >= numBlocksPerLine && f.blank && mod == f.index % numBlocksPerLine;
                                 });
 
+                                if (!blank) {
+                                    blank = this.localFiles[this.localFiles.length - 1];
+                                }
                                 this.swap(file, blank);
-                                this.sleep(.05);
+                                _context2.next = 11;
+                                return this.sleep(.05);
+
+                            case 11:
                                 block.style.opacity = 0;
                                 this.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_3__js_file__["b" /* generateBlankFile */])(file.index);
 
-                            case 11:
+                            case 13:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -14638,16 +14655,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                         switch (_context4.prev = _context4.next) {
                             case 0:
                                 this.loadChildren();
+                                console.log('watch files');
 
                                 if (!(this.localFiles.length == 0)) {
-                                    _context4.next = 4;
+                                    _context4.next = 6;
                                     break;
                                 }
 
-                                _context4.next = 4;
+                                console.log('loadLocalFiles watch');
+                                _context4.next = 6;
                                 return this.loadLocalFiles();
 
-                            case 4:
+                            case 6:
                                 //add the real files to the list, if you are inside a folder, it will show only its files
                                 if (this.files.length > this.oldFiles.length) {
                                     _files = this.currentFolder == null ? this.files.filter(function (f) {
@@ -14698,9 +14717,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                         _this4.deleteFile(file);
                                     });
                                 }
+                                this.localFiles.sort(function (a, b) {
+                                    return a.index - b.index;
+                                });
                                 this.oldFiles = [].concat(this.files);
 
-                            case 6:
+                            case 9:
                             case 'end':
                                 return _context4.stop();
                         }

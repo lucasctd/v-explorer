@@ -72,8 +72,10 @@ export default {
             this.localFiles = this.localFiles.filter(f => {//remove existing files
                 return f.blank;
             });
-            await this.sleep(.6);//wait for the animation ends
+			await this.sleep(.6);//wait for the animation ends
             this.localFiles = [];
+			await this.sleep(.2);//wait for the animation ends
+			this.localFiles = [];
             const numBlocks = this.getNumberOfBlocks();
             for (let x = 0; x <= numBlocks; x++){
                 this.localFiles.push(generateBlankFile(x));
@@ -83,6 +85,7 @@ export default {
             files.forEach(file => {
                 this.localFiles.splice(file.index, 1, file);
             });
+			await this.sleep(.1);
             this.localFiles.sort((a, b) => a.index - b.index);
             this.oldFiles = [].concat(this.files);
         },
@@ -160,9 +163,12 @@ export default {
 			const numBlocksPerLine = Math.floor(containerWidth / blockWidth);
 			const mod = file.index % numBlocksPerLine;
 			
-            const blank = this.localFiles.find(f => f.index >= numBlocksPerLine && f.blank && mod == (f.index % numBlocksPerLine));
+            let blank = this.localFiles.find(f => f.index >= numBlocksPerLine && f.blank && mod == (f.index % numBlocksPerLine));
+			if(!blank) {
+				blank = this.localFiles[this.localFiles.length - 1];
+			}
 			this.swap(file, blank);
-            this.sleep(.05);
+            await this.sleep(.05);
             block.style.opacity = 0;
             this.localFiles[file.index] = generateBlankFile(file.index);
         },
@@ -183,7 +189,9 @@ export default {
     watch: {
         async files() {
             this.loadChildren();
+			console.log('watch files')			
             if(this.localFiles.length == 0) {
+				console.log('loadLocalFiles watch')
                 await this.loadLocalFiles();
             }
             //add the real files to the list, if you are inside a folder, it will show only its files
@@ -205,6 +213,7 @@ export default {
                     this.deleteFile(file);
                 });
             }
+			this.localFiles.sort((a, b) => a.index - b.index);
             this.oldFiles = [].concat(this.files);
         },
         path(value) {

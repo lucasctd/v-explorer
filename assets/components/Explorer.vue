@@ -58,7 +58,7 @@ export default {
 		document.addEventListener("DOMContentLoaded", function(event) {			
             this.addListeners();
             this.loadChildren();
-			this.loadLocalFiles();
+            this.loadLocalFiles();
 		}.bind(this));			
     },
     methods: {
@@ -67,28 +67,27 @@ export default {
                 file.children = this.files.filter(f => f.parentId == file.id);
             });
         },
-        loadLocalFiles() {
+        async loadLocalFiles() {
             //create blank 'files'
             this.localFiles = this.localFiles.filter(f => {//remove existing files
                 return f.blank;
             });
-            setTimeout(function () {
-                this.localFiles = [];
-            }.bind(this), 600);
-
-            setTimeout(function () {
-                const numBlocks = this.getNumberOfBlocks();
-                for (let x = 0; x <= numBlocks; x++){
-                    this.localFiles.push(generateBlankFile(x));
-                }
-                //add the real files to the list, if you are inside a folder, it will show only its files
-                const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
-                files.forEach(file => {
-                    this.localFiles.splice(file.index, 1, file);
-                });
-                this.localFiles.sort((a, b) => a.index - b.index);
-                this.oldFiles = [].concat(this.files);
-            }.bind(this), 800);
+			await this.sleep(.6);//wait for the animation ends
+            this.localFiles = [];
+			await this.sleep(.2);//wait for the animation ends
+			this.localFiles = [];
+            const numBlocks = this.getNumberOfBlocks();
+            for (let x = 0; x <= numBlocks; x++){
+                this.localFiles.push(generateBlankFile(x));
+            }
+            //add the real files to the list, if you are inside a folder, it will show only its files
+            const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
+            files.forEach(file => {
+                this.localFiles.splice(file.index, 1, file);
+            });
+			await this.sleep(.1);
+            this.localFiles.sort((a, b) => a.index - b.index);
+            this.oldFiles = [].concat(this.files);
         },
         updateFiles(file) {
             this.swap(file, this.draggedFile);
@@ -96,10 +95,8 @@ export default {
 		swap(fileA, fileB) {
 			const fileAIndex = fileA.index;
             const fileBIndex = fileB.index;
-
-            this.localFiles[fileAIndex].index = fileBIndex;
-            this.localFiles[fileBIndex].index = fileAIndex;
-
+            fileA.index = fileBIndex;
+            fileB.index = fileAIndex;
             this.localFiles.splice(fileAIndex, 1, fileB);
             this.localFiles.splice(fileBIndex, 1, fileA);
 		},
@@ -158,7 +155,7 @@ export default {
 				this.$emit('move', this.draggedFile);
 			}
         },
-        deleteFile(file) {
+        async deleteFile(file) {
             const containerWidth = document.getElementById(this.id).offsetWidth;
             const block = document.getElementById(file.id);
 			const blockStyle = getComputedStyle(block);
@@ -166,29 +163,47 @@ export default {
 			const numBlocksPerLine = Math.floor(containerWidth / blockWidth);
 			const mod = file.index % numBlocksPerLine;
 			
-			const blank = this.localFiles.find(f => f.index >= numBlocksPerLine && f.blank && mod == (f.index % numBlocksPerLine));
-			setTimeout(function() {
-				block.style.opacity = 0;
-                this.localFiles[file.index] = generateBlankFile(file.index);
-            }.bind(this), 50);
+            let blank = this.localFiles.find(f => f.index >= numBlocksPerLine && f.blank && mod == (f.index % numBlocksPerLine));
+			if(!blank) {
+				blank = this.localFiles[this.localFiles.length - 1];
+			}
 			this.swap(file, blank);
+            await this.sleep(.05);
+            block.style.opacity = 0;
+            this.localFiles[file.index] = generateBlankFile(file.index);
         },
         dblclick(file) {
             if(file.dir) {
                 this.path.push(new Breadcrumb(file.name, file));
             }
             this.$emit('dblclick', file);
+        },
+        sleep(seconds) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, seconds * 1000);
+            });
         }
     },
     watch: {
-        files() {
+        async files() {
             this.loadChildren();
+			console.log('watch files')			
+            if(this.localFiles.length == 0) {
+				console.log('loadLocalFiles watch')
+                await this.loadLocalFiles();
+            }
             //add the real files to the list, if you are inside a folder, it will show only its files
             if (this.files.length > this.oldFiles.length) {
                 const files = this.currentFolder == null ? this.files.filter(f => f.parentId == null) : this.currentFolder.children;
                 let newFiles = files.filter(file => this.oldFiles.indexOf(file) == -1);
-                newFiles.forEach(file => {
-                    this.localFiles.splice(file.index, 1, file);
+                newFiles.forEach(async file => {
+                    const blankFile = this.localFiles.find(f => f.index == file.index);
+                    this.localFiles.push(file);
+                    file.blank = false;
+                    file.index = this.localFiles.length - 1;
+                    this.swap(file, blankFile);
                 });
             } else {
                 const parentId = this.currentFolder == null ? null : this.currentFolder.id;
@@ -198,6 +213,7 @@ export default {
                     this.deleteFile(file);
                 });
             }
+			this.localFiles.sort((a, b) => a.index - b.index);
             this.oldFiles = [].concat(this.files);
         },
         path(value) {

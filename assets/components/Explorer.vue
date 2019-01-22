@@ -74,8 +74,8 @@ export default {
             });
 			await this.sleep(.6);//wait for the animation ends
             this.localFiles = [];
-			await this.sleep(.2);//wait for the animation ends
-			this.localFiles = [];
+			await this.sleep(.2);//it needs to wait the animation gets done before moving on. For some reason locaFiles are not empty after this,
+			this.localFiles = []; //that's why I am cleaning the list again ** I gotta find a better solution later though
             const numBlocks = this.getNumberOfBlocks();
             for (let x = 0; x <= numBlocks; x++){
                 this.localFiles.push(generateBlankFile(x));
@@ -189,9 +189,7 @@ export default {
     watch: {
         async files() {
             this.loadChildren();
-			console.log('watch files')			
             if(this.localFiles.length == 0) {
-				console.log('loadLocalFiles watch')
                 await this.loadLocalFiles();
             }
             //add the real files to the list, if you are inside a folder, it will show only its files

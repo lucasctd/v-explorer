@@ -2555,6 +2555,7 @@ var File = function File(id, name, index) {
     var parentId = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
     var uploading = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
     var progress = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
+    var dir = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : false;
 
     _classCallCheck(this, File);
 
@@ -2566,7 +2567,7 @@ var File = function File(id, name, index) {
     this.uploading = uploading;
     this.progress = progress;
     this.children = [];
-    this.dir = false;
+    this.dir = dir;
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (File);
@@ -2646,9 +2647,9 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         this.files = [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "Folder", 10, 'folder')];
         this.files[0].dir = true;
         setTimeout(function () {
-            this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2", 8, 'file', 1));
+            this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2", 8, 'folder', 1, false, 0, true));
             setTimeout(function () {
-                this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4, 'file', 1));
+                this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](3, "File 3", 4, 'folder', 2, false, 0, true));
             }.bind(this), 2000);
             setTimeout(function () {
                 this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](4, "File 4", 0, 'file'));
@@ -14481,8 +14482,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 return this.sleep(.2);
 
                             case 6:
-                                //wait for the animation ends
-                                this.localFiles = [];
+                                //it needs to wait the animation gets done before moving on. For some reason locaFiles are not empty after this,
+                                this.localFiles = []; //that's why I am cleaning the list again ** I gotta find a better solution later though
                                 numBlocks = this.getNumberOfBlocks();
 
                                 for (x = 0; x <= numBlocks; x++) {
@@ -14655,18 +14656,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                         switch (_context4.prev = _context4.next) {
                             case 0:
                                 this.loadChildren();
-                                console.log('watch files');
 
                                 if (!(this.localFiles.length == 0)) {
-                                    _context4.next = 6;
+                                    _context4.next = 4;
                                     break;
                                 }
 
-                                console.log('loadLocalFiles watch');
-                                _context4.next = 6;
+                                _context4.next = 4;
                                 return this.loadLocalFiles();
 
-                            case 6:
+                            case 4:
                                 //add the real files to the list, if you are inside a folder, it will show only its files
                                 if (this.files.length > this.oldFiles.length) {
                                     _files = this.currentFolder == null ? this.files.filter(function (f) {
@@ -14722,7 +14721,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 });
                                 this.oldFiles = [].concat(this.files);
 
-                            case 9:
+                            case 7:
                             case 'end':
                                 return _context4.stop();
                         }

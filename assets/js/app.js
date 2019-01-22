@@ -23,9 +23,9 @@ new Vue({
         ];
 		this.files[0].dir = true;
         setTimeout(function() {
-            this.files.push(new File(2, "File 2", 8, 'file', 1));
+            this.files.push(new File(2, "File 2", 8, 'folder', 1, false, 0, true));
             setTimeout(function() {
-                this.files.push(new File(3, "File 3", 4, 'file', 1));
+                this.files.push(new File(3, "File 3", 4, 'folder', 2, false, 0, true));
             }.bind(this), 2000);
             setTimeout(function() {
                 this.files.push(new File(4, "File 4", 0, 'file'));

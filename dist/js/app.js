@@ -2653,8 +2653,9 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             }.bind(this), 2000);
             setTimeout(function () {
                 this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](4, "File 4", 0, 'file'));
+                this.$refs.explorer.openFolder(this.files[2]);
             }.bind(this), 1000);
-        }.bind(this), 1000);
+        }.bind(this), 3000);
     },
 
     methods: {
@@ -14411,7 +14412,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             localFiles: [],
             oldFiles: [],
             currentFolder: null,
-            path: [new __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__["a" /* default */]('C:', null)]
+            path: []
         };
     },
 
@@ -14437,7 +14438,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             default: function _default() {
                 return '100%';
             }
+        },
+        rootDrive: {
+            required: false,
+            type: String,
+            default: function _default() {
+                return 'C:';
+            }
         }
+    },
+    beforeMount: function beforeMount() {
+        this.path = [new __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__["a" /* default */](this.rootDrive, null)];
     },
     mounted: function mounted() {
         this.id += 'v-explorer-container_' + Math.floor(Math.random() * 1000 + 1);
@@ -14635,6 +14646,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 this.path.push(new __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__["a" /* default */](file.name, file));
             }
             this.$emit('dblclick', file);
+        },
+        openFolder: function openFolder(folder) {
+            if (folder.dir) {
+                this.path.push(new __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__["a" /* default */](folder.name, folder));
+            } else {
+                throw '"' + folder.name + '" is not a folder. Make sure to set "folder.dir = true"';
+            }
         },
         sleep: function sleep(seconds) {
             return new Promise(function (resolve) {

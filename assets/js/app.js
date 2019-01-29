@@ -29,8 +29,11 @@ new Vue({
             }.bind(this), 2000);
             setTimeout(function() {
                 this.files.push(new File(4, "File 4", 0, 'file'));
+				this.$refs.explorer.openFolder(this.files[2]);
             }.bind(this), 1000);
-        }.bind(this), 1000);
+			
+        }.bind(this), 3000);
+
     },
     methods: {
         contextmenu(e) {

@@ -26,7 +26,7 @@ export default {
             localFiles: [],
             oldFiles: [],
             currentFolder: null,
-            path: [new Breadcrumb('C:', null)]
+            path: []
         }
     },
     props: {
@@ -51,8 +51,18 @@ export default {
 			default() {
 				return '100%';
 			}
-        }
+        },
+		rootDrive: {
+			required: false,
+            type: String,
+			default() {
+				return 'C:';
+			}
+		}
     },
+	beforeMount() {
+		this.path = [new Breadcrumb(this.rootDrive, null)];
+	},
     mounted() {
 		this.id += ('v-explorer-container_' + Math.floor((Math.random() * 1000) + 1));
 		document.addEventListener("DOMContentLoaded", function(event) {			
@@ -178,6 +188,13 @@ export default {
             }
             this.$emit('dblclick', file);
         },
+		openFolder(folder) {
+			if(folder.dir) {
+                this.path.push(new Breadcrumb(folder.name, folder));
+            } else {
+				throw `"${folder.name}" is not a folder. Make sure to set "folder.dir = true"`;
+			}
+		},
         sleep(seconds) {
             return new Promise((resolve) => {
                 setTimeout(() => {

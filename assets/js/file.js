@@ -3,7 +3,7 @@
  * @author Lucas Reis <lucas@programmer.com.br>
  */
 export default class File {
-    constructor(id, name, index, icon = "file", parentId = null, uploading = false, progress = 0, dir = false) {
+    constructor(id, name, index, icon = "file", parentId = null, uploading = false, progress = 0, dir = false, canRename = true) {
         this.id = id;
         this.name = name;
         this.index = index;
@@ -13,6 +13,7 @@ export default class File {
         this.progress = progress;
         this.children = [];
         this.dir = dir;
+		this.canRename = canRename;
     }
 }
 

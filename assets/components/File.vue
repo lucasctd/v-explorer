@@ -56,7 +56,14 @@ export default {
         options: {
             required: true,
             type: Array
-        }
+        },
+		canRename: {
+			required: false,
+            type: Boolean,
+			default() {
+				return true;
+			}
+		}
     },
     mounted() {
         this.addListeners();
@@ -114,10 +121,12 @@ export default {
             this.$emit('dblclick', this.file);
         },
 		rename() {
-			this.renaming = true;
-			setTimeout(function() {
-				this.$refs.filename_input.focus();
-			}.bind(this), 200);
+			if(this.canRename) {
+				this.renaming = true;
+				setTimeout(function() {
+					this.$refs.filename_input.focus();
+				}.bind(this), 200);
+			}
 		},
 		onRenamed() {
 			this.renaming = false;

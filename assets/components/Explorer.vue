@@ -5,7 +5,7 @@
         <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
-                @contextmenu="contextmenu" @upload-canceled="uploadCanceled" @file-rename="fileRename" @dblclick="dblclick">
+                @contextmenu="contextmenu" @upload-canceled="uploadCanceled" @file-rename="fileRename" @dblclick="dblclick" :can-rename="canRenameFiles && file.canRename">
             </v-file>
         </transition-group>
     </div>
@@ -57,6 +57,13 @@ export default {
             type: String,
 			default() {
 				return 'C:';
+			}
+		},
+		canRenameFiles: {
+			required: false,
+            type: Boolean,
+			default() {
+				return true;
 			}
 		}
     },

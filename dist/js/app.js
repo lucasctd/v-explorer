@@ -2556,6 +2556,7 @@ var File = function File(id, name, index) {
     var uploading = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
     var progress = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
     var dir = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : false;
+    var canRename = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : true;
 
     _classCallCheck(this, File);
 
@@ -2568,6 +2569,7 @@ var File = function File(id, name, index) {
     this.progress = progress;
     this.children = [];
     this.dir = dir;
+    this.canRename = canRename;
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (File);
@@ -2646,6 +2648,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         this.options.push(__WEBPACK_IMPORTED_MODULE_3__option__["c" /* renameOption */]);
         this.files = [new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](1, "Folder", 10, 'folder')];
         this.files[0].dir = true;
+        this.files[0].canRename = false;
         setTimeout(function () {
             this.files.push(new __WEBPACK_IMPORTED_MODULE_2__file__["a" /* default */](2, "File 2", 8, 'folder', 1, false, 0, true));
             setTimeout(function () {
@@ -14445,6 +14448,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             default: function _default() {
                 return 'C:';
             }
+        },
+        canRenameFiles: {
+            required: false,
+            type: Boolean,
+            default: function _default() {
+                return true;
+            }
         }
     },
     beforeMount: function beforeMount() {
@@ -15707,6 +15717,13 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library *
         options: {
             required: true,
             type: Array
+        },
+        canRename: {
+            required: false,
+            type: Boolean,
+            default: function _default() {
+                return true;
+            }
         }
     },
     mounted: function mounted() {
@@ -15767,10 +15784,12 @@ __WEBPACK_IMPORTED_MODULE_2__fortawesome_fontawesome_svg_core__["c" /* library *
             this.$emit('dblclick', this.file);
         },
         rename: function rename() {
-            this.renaming = true;
-            setTimeout(function () {
-                this.$refs.filename_input.focus();
-            }.bind(this), 200);
+            if (this.canRename) {
+                this.renaming = true;
+                setTimeout(function () {
+                    this.$refs.filename_input.focus();
+                }.bind(this), 200);
+            }
         },
         onRenamed: function onRenamed() {
             this.renaming = false;
@@ -18062,7 +18081,11 @@ var render = function() {
         _vm._l(_vm.localFiles, function(file) {
           return _c("v-file", {
             key: file.id,
-            attrs: { file: file, options: _vm.options },
+            attrs: {
+              file: file,
+              options: _vm.options,
+              "can-rename": _vm.canRenameFiles && file.canRename
+            },
             on: {
               drop: _vm.updateFiles,
               dragstart: _vm.dragstart,

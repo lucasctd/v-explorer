@@ -22,6 +22,7 @@ new Vue({
             new File(1, "Folder", 10, 'folder'),
         ];
 		this.files[0].dir = true;
+		this.files[0].canRename = false;
         setTimeout(function() {
             this.files.push(new File(2, "File 2", 8, 'folder', 1, false, 0, true));
             setTimeout(function() {

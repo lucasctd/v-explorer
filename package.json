@@ -1,7 +1,7 @@
 {
   "name": "v-explorer",
-  "version": "0.2.3",
-  "description": "A vue component to explore files and folders",
+  "version": "0.2.4",
+  "description": "A vue component to explore files and folders.",
   "main": "index.js",
   "scripts": {
     "dev": "npm run development",

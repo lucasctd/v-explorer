@@ -12,7 +12,7 @@ new Vue({
         options: []
     },
     mounted() {
-        this.options.push(new Option('Delete', (e) => {
+        this.options.push(new Option('Delete emu arquivos', (e) => {
             this.files = this.files.filter(f => f.id != e.id);
         }, (file) => {
             return !file.blank;

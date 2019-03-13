@@ -1,12 +1,12 @@
 const visibleFunc = (file) => {
     return true;
-}
+};
 
 /**
  * Option class
  * @author Lucas Reis <lucas@programmer.com.br>
  */
-export default class Option {
+class Option {
     constructor(name, click, visible = visibleFunc) {
         this.name = name;
         this.click = click;
@@ -29,3 +29,4 @@ class RenameOption extends Option {
 const renameOption = new RenameOption('Rename');
 
 export {Option, renameOption, RenameOption};
+export default Option;

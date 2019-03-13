@@ -30,6 +30,13 @@ export default {
         show: {
             required: true,
             type: Boolean
+        },
+        autoResizeOptions: {
+            required: false,
+            type: Boolean,
+            default() {
+                return true;
+            }
         }
     },
     mounted(){
@@ -74,7 +81,7 @@ export default {
             if(val){
                 this.hideAllContextMenu();
 				this.$nextTick(() => {//resize font to fit in the div's default height
-                    if(this.$refs.opt) {
+                    if(this.$refs.opt && this.autoResizeOptions) {
                         let defaultFontSize = 13;
                         this.$refs.opt.forEach(el => {
                             while(el.clientHeight > 30) {

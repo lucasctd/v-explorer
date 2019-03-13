@@ -12,29 +12,14 @@ new Vue({
         options: []
     },
     mounted() {
-        this.options.push(new Option('Delete emu arquivos', (e) => {
-            this.files = this.files.filter(f => f.id != e.id);
-        }, (file) => {
-            return !file.blank;
-        }));
         this.options.push(renameOption);
         this.files =  [
-            new File(1, "Folder", 10, 'folder'),
+            new File(1, "Folder 1", 10, 'folder'),
         ];
 		this.files[0].dir = true;
-		this.files[0].canRename = false;
         setTimeout(function() {
-            this.files.push(new File(2, "File 2", 8, 'folder', 1, false, 0, true));
-            setTimeout(function() {
-                this.files.push(new File(3, "File 3", 4, 'folder', 2, false, 0, true));
-            }.bind(this), 2000);
-            setTimeout(function() {
-                this.files.push(new File(4, "File 4", 0, 'file'));
-				this.$refs.explorer.openFolder(this.files[2]);
-            }.bind(this), 1000);
-			
+            this.files.push(new File(2, "Folder 2", 8, 'folder', 1, false, 0, true));			
         }.bind(this), 3000);
-
     },
     methods: {
         contextmenu(e) {
@@ -55,15 +40,16 @@ new Vue({
             }
             let x = 0;
             let file = new File(fakeId, files[0].name, 4);
-            //file.uploading = true;
+            file.uploading = true;
             this.files.push(file);
-            /*let interval = setInterval(() => {
+            //fake upload progress
+            let interval = setInterval(() => {
                 x+=5;
                 file.progress = x;
                 if(x >= 100 || !file.uploading) {
                     clearInterval(interval);
                 }
-            }, 1000);*/
+            }, 1000);
         },
 		move(e) {
 			console.log(e)

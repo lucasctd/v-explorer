@@ -5,7 +5,8 @@
         <transition-group name="v-exp-list" tag="div">
             <v-file v-for="file in localFiles" :file="file" :key="file.id" @drop="updateFiles"
                 @dragstart="dragstart" @dragend="dragend" :options="options" @click.stop="click" 
-                @contextmenu="contextmenu" @upload-canceled="uploadCanceled" @file-rename="fileRename" @dblclick="dblclick" :can-rename="canRenameFiles && file.canRename">
+                @contextmenu="contextmenu" @upload-canceled="uploadCanceled" @file-rename="fileRename" @dblclick="dblclick" :can-rename="canRenameFiles && file.canRename"
+                    :auto-resize-options="autoResizeOptions">
             </v-file>
         </transition-group>
     </div>
@@ -65,7 +66,14 @@ export default {
 			default() {
 				return true;
 			}
-		}
+		},
+        autoResizeOptions: {
+            required: false,
+            type: Boolean,
+            default() {
+                return true;
+            }
+        }
     },
 	beforeMount() {
 		this.path = [new Breadcrumb(this.rootDrive, null)];

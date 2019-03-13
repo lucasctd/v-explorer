@@ -1,6 +1,6 @@
 const visibleFunc = (file) => {
     return true;
-}
+};
 
 /**
  * Option class

@@ -25,7 +25,8 @@
                 Cancel?
             </div>
         </transition>
-        <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft" @click-option="checkIfRename"></v-context-menu>
+        <v-context-menu :show.sync="showContextMenu" :file="file" :options="options" :top="contextMenuTop" :left="contextMenuLeft" @click-option="checkIfRename"
+                        :auto-resize-options="autoResizeOptions"></v-context-menu>
     </div>
 </template>
 <script>
@@ -63,7 +64,14 @@ export default {
 			default() {
 				return true;
 			}
-		}
+		},
+        autoResizeOptions: {
+            required: false,
+            type: Boolean,
+            default() {
+                return true;
+            }
+        }
     },
     mounted() {
         this.addListeners();

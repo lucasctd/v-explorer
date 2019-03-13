@@ -1,15 +1,17 @@
 # v-explorer
 A "file" explorer component for Vue.
 
-### How to:
+## How to:
 
-#### Install
+### Install
 
 **Yarn**: yarn add v-explorer
 
 **NPM**: npm i v-explorer --save
 
-#### Use
+### Use
+
+#### JS
 ```javascript
 import Vue from 'vue'
 import {Explorer, renameOption, File} from 'v-explorer'
@@ -27,7 +29,7 @@ new Vue({
         this.files =  [
             new File(1, "Folder 1", 10, 'folder'),
         ];
-		this.files[0].dir = true;
+	this.files[0].dir = true;
         setTimeout(function() {
             this.files.push(new File(2, "Folder 2", 8, 'folder', 1, false, 0, true));			
         }.bind(this), 3000);
@@ -37,10 +39,11 @@ new Vue({
         uploadCanceled(file) {}, //handle cancel events
         fileRename(file) {}, //handle rename events
         drop(files) {}, //handle drop events
-		move(e) {} //handle move events
+        move(e) {} //handle move events
     }
 });
 ```
+#### HTML
 ```html
 <div id="app" style="height: 480px; width: 800px; border: 1px solid red; position: relative; top: 30px;">
     <v-explorer height="50%" 
@@ -53,28 +56,28 @@ Will render something like this:
 ![v-explorer example](https://i.ibb.co/zHN0YP8/v-explorer.gif)
 You can see the whole code of this example in dist/index.html and assets/js/app.js.
 
-#### Events
+### Events
 
-##### contextmenu
+#### contextmenu
 It will pass the selected file(s), if any, when a right click is executed.
-##### select
+#### select
 It will pass the selected file when a left click is executed.
-##### dragstart/dragend
+#### dragstart/dragend
 It will pass the selected file when a file is dragged.
-##### upload-canceled
+#### upload-canceled
 It will pass the file that the upload has been canceled
-##### file-rename
+#### file-rename
 It will pass the file that has been renamed
-##### drop
+#### drop
 It will pass the file that has been dropped
-##### move
+#### move
 It will pass the file that has been moved (after it's dropped)
-##### dblclick
+#### dblclick
 It will pass the file that has been double clicked
 
-#### Props
+### Props
 
-##### files (required|array)
+#### files (required|array)
 <p>
 The files that are going to be displayed
 
@@ -82,7 +85,7 @@ The files that are going to be displayed
 </small>
 <p>
 
-##### options (required|array)
+#### options (required|array)
 <p>
 The context menu options
 
@@ -90,13 +93,13 @@ The context menu options
 </small>
 <p>
 
-##### width
+#### width
 The container's width (default: 100%|string)
-##### height
+#### height
 The container's height (default: 100%|string)
-##### root-drive
+#### root-drive
 The root letter (default C:|string)
-##### can-rename-files
+#### can-rename-files
 <p>
 Set if the user can rename the files (default: true|boolean)
 
@@ -104,6 +107,6 @@ Set if the user can rename the files (default: true|boolean)
 </small>
 <p>
 
-##### auto-resize-options
+#### auto-resize-options
 Explorer will try to resize the context menu options that don't fit will. It may have some
 unwanted behaviour so you can disable it by passing false to this option. (default: true|boolean)

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+const storeModule = {
     state: {
         currentFolder: null,
         selectedFiles: [],
@@ -37,7 +37,9 @@ const store = new Vuex.Store({
             return state.currentFolder;
         }
     }
-});
+};
 
-export {store};
+const store = new Vuex.Store(storeModule);
+
+export {store, storeModule};
 export default store;

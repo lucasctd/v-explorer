@@ -1,11 +1,10 @@
 import Vue from 'vue';
-import Explorer from '../components/Explorer'
-import File from "./file"
-import Option, {renameOption} from './option'
+import {Explorer, File, Option, renameOption, store} from '../../index'
 
 Vue.component('v-explorer', Explorer);
 
 new Vue({
+    store,
     el: '#app',
     data: {
         files: [],
@@ -13,6 +12,9 @@ new Vue({
     },
     mounted() {
         this.options.push(renameOption);
+        this.options.push(new Option('teste', f => {
+            this.$store.commit('openFolder', f);
+        }), f => f.dir);
         this.files =  [
             new File(1, "Folder 1", 10, 'folder'),
         ];
@@ -32,7 +34,8 @@ new Vue({
             console.log('fileRename');
             console.log(file);
         },
-        drop(files) {
+        drop({files, index}) {
+            console.log(files, index)
             const ids = this.files.map(f => f.id);
             let fakeId = this.genFakeId();
             while(ids.find(id => id == fakeId)) {
@@ -56,6 +59,11 @@ new Vue({
 		},
         genFakeId() {
             return Math.floor((Math.random() * 1000) + 1);
+        }
+    },
+    computed: {
+        currentFolder() {
+            return this.$store.getters.currentFolder != null ? this.$store.state.currentFolder : new File('adc', 'C:');
         }
     }
 });

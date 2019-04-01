@@ -11,6 +11,7 @@ A "file" explorer component for Vue.
 
 ### Use
 
+----
 #### JS
 ```javascript
 import Vue from 'vue'
@@ -58,6 +59,7 @@ You can see the whole code of this example in dist/index.html and assets/js/app.
 
 ### Events
 
+----
 #### contextmenu
 It will pass the selected file(s), if any, when a right click is executed.
 #### select
@@ -77,6 +79,7 @@ It will pass the file that has been double clicked
 
 ### Props
 
+----
 #### files (required|array)
 <p>
 The files that are going to be displayed
@@ -110,3 +113,52 @@ Set if the user can rename the files (default: true|boolean)
 #### auto-resize-options
 Explorer will try to resize the context menu options that don't fit will. It may have some
 unwanted behaviour so you can disable it by passing false to this option. (default: true|boolean)
+
+### Getters
+
+----
+In order to access some explorer data, you will need to import its store and get
+what you want like below:
+
+```javascript
+import Vue from 'vue'
+import {Explorer, store} from 'v-explorer'
+
+Vue.component('v-explorer', Explorer); //for global usage
+
+new Vue({
+    el: '#app',
+    store,
+    computed: {
+        currentFolder() { //returns the current displayed folder
+            return this.$store.getters.currentFolder;
+          },
+          selectedFiles() { //return an array of the selected files
+              return this.$store.getters.selectedFiles;
+          }
+      }
+  })
+```
+
+### Methods
+
+----
+You may also call some methods to change things on v-explorer. To do so, you will need to
+commit the action on the store.
+
+```javascript
+import Vue from 'vue'
+import {Explorer, store} from 'v-explorer'
+
+Vue.component('v-explorer', Explorer); //for global usage
+
+new Vue({
+    el: '#app',
+    store,
+    methods: {
+        openFolder() { //Open a folder from the current displayed folder
+            this.$store.commit('openFolder', folder);
+        }
+    }
+  })
+```

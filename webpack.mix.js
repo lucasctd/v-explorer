@@ -9,6 +9,13 @@ let mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-
+mix.webpackConfig({
+    resolve: {
+        modules: [
+            path.resolve(__dirname, 'node_modules'),
+            path.resolve(__dirname, 'assets'),
+        ]
+    }
+});
 mix.setPublicPath('dist')
    .js('assets/js/app.js', 'js/app.js');

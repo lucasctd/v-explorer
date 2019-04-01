@@ -1,7 +1,7 @@
 
 <template>
     <div :id="file.id" :class="{'v-exp-file': !file.blank, 'v-exp-blank': file.blank}" draggable="true" 
-        @drop.prevent="drop" @dragstart="dragstart" @dragend="dragend" @dragenter.prevent="dragenter" @dragleave="dragleave" @dragover.prevent="dragover"
+        @drop.stop.prevent="drop" @dragstart="dragstart" @dragend="dragend" @dragenter.prevent="dragenter" @dragleave="dragleave" @dragover.prevent="dragover"
         @contextmenu.prevent="contextmenu" @click.stop="click" @mouseenter="showCancelMessage = true" @mouseleave="showCancelMessage = false" @dblclick="dblclick">
 
         <!-- <fa-icon :icon="file.icon"></fa-icon> -->
@@ -30,13 +30,13 @@
     </div>
 </template>
 <script>
-import ContextMenu from './ContextMenu.vue'
+import ContextMenu from 'components/ContextMenu.vue'
+import {RenameOption} from 'js/option'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {far} from '@fortawesome/free-regular-svg-icons'
-import {RenameOption} from '../js/option'
 
-library.add(far)
+library.add(far);
 
 export default {
     data() {
@@ -78,15 +78,17 @@ export default {
     },
     methods: {        
         dragenter() {
-            this.draggingover = true
+            this.draggingover = true;
         },
         dragleave() {
-            this.draggingover = false
+            this.draggingover = false;
         },
         drop(e) {
-            this.draggingover = false
+            this.draggingover = false;
             if(e.dataTransfer.files.length === 0) {
                 this.$emit('drop', this.file);
+            } else {
+                this.$emit('upload', {files: e.dataTransfer.files, index: this.file.index});
             }
         },
         dragstart(e) {
@@ -94,6 +96,7 @@ export default {
             this.$emit('dragstart', this.file);
         },
         dragend() {
+            this.draggingover = false;
             this.$emit('dragend', this.file);
         },
         dragover() {

@@ -6,25 +6,23 @@
 	</div>
 </template>
 <script>
+import store from 'store/store'
 
 export default {
-    props: {
-        path: {
-            required: true,
-            type: Array
-        },
-    },
-    mounted() {
-    },
+	store,
     methods: {
         click(name) {
             const index = this.path.map(p => p.name).indexOf(name);
             if(index < (this.path.length - 1)) {
-                const l = this.path.slice(0, index + 1);
-                this.$emit('update:path', l);
+                this.$store.commit('slicePath', index + 1);
             }
         }
-    }
+    },
+	computed: {
+		path() {
+			return this.$store.state.path;
+		}
+	}
 }
 
 </script>

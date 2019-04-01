@@ -30,8 +30,8 @@
     </div>
 </template>
 <script>
-import ContextMenu from 'components/ContextMenu.vue'
-import {RenameOption} from 'js/option'
+import ContextMenu from './ContextMenu.vue'
+import {RenameOption} from '../js/option'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {far} from '@fortawesome/free-regular-svg-icons'

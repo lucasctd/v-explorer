@@ -13,11 +13,11 @@
 </template>
 <script>
 
-import vFile from 'components/File.vue'
-import vBreadcrumb from 'components/Breadcrumb.vue'
-import {generateBlankFile} from 'js/file'
-import Breadcrumb from 'js/breadcrumb'
-import store from 'store/store'
+import vFile from './File.vue'
+import vBreadcrumb from './Breadcrumb.vue'
+import {generateBlankFile} from '../js/file'
+import Breadcrumb from '../js/breadcrumb'
+import store from '../store/store'
 
 export default {
     store,

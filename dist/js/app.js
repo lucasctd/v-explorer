@@ -14308,13 +14308,13 @@ module.exports = function listToStyles (parentId, list) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_File_vue__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_File_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_components_File_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_Breadcrumb_vue__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_Breadcrumb_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_components_Breadcrumb_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_file__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_js_breadcrumb__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_store_store__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__File_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__File_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__File_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Breadcrumb_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Breadcrumb_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Breadcrumb_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__js_file__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store_store__ = __webpack_require__(4);
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -14341,7 +14341,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    store: __WEBPACK_IMPORTED_MODULE_5_store_store__["a" /* default */],
+    store: __WEBPACK_IMPORTED_MODULE_5__store_store__["a" /* default */],
     data: function data() {
         return {
             id: '',
@@ -14397,7 +14397,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         }
     },
     beforeMount: function beforeMount() {
-        this.$store.commit('addItemToPath', new __WEBPACK_IMPORTED_MODULE_4_js_breadcrumb__["a" /* default */](this.rootDrive, null));
+        this.$store.commit('addItemToPath', new __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__["a" /* default */](this.rootDrive, null));
     },
     mounted: function mounted() {
         this.id += 'v-explorer-container_' + Math.floor(Math.random() * 1000 + 1);
@@ -14447,7 +14447,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 numBlocks = this.getNumberOfBlocks();
 
                                 for (x = 0; x <= numBlocks; x++) {
-                                    this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_3_js_file__["b" /* generateBlankFile */])(x));
+                                    this.localFiles.push(Object(__WEBPACK_IMPORTED_MODULE_3__js_file__["b" /* generateBlankFile */])(x));
                                 }
                                 //add the real files to the list, if you are inside a folder, it will show only its files
                                 files = this.currentFolder == null ? this.files.filter(function (f) {
@@ -14568,7 +14568,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                             case 11:
                                 block.style.opacity = '0';
-                                this.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_3_js_file__["b" /* generateBlankFile */])(file.index);
+                                this.localFiles[file.index] = Object(__WEBPACK_IMPORTED_MODULE_3__js_file__["b" /* generateBlankFile */])(file.index);
 
                             case 13:
                             case 'end':
@@ -14589,7 +14589,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         },
         openFolder: function openFolder(folder) {
             if (folder.dir) {
-                this.$store.commit('addItemToPath', new __WEBPACK_IMPORTED_MODULE_4_js_breadcrumb__["a" /* default */](folder.name, folder));
+                this.$store.commit('addItemToPath', new __WEBPACK_IMPORTED_MODULE_4__js_breadcrumb__["a" /* default */](folder.name, folder));
                 this.$emit('dblclick', folder);
             } else {
                 throw '"' + folder.name + '" is not a folder. Make sure to set "folder.dir = true"';
@@ -14711,8 +14711,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         }
     },
     components: {
-        vFile: __WEBPACK_IMPORTED_MODULE_1_components_File_vue___default.a,
-        vBreadcrumb: __WEBPACK_IMPORTED_MODULE_2_components_Breadcrumb_vue___default.a
+        vFile: __WEBPACK_IMPORTED_MODULE_1__File_vue___default.a,
+        vBreadcrumb: __WEBPACK_IMPORTED_MODULE_2__Breadcrumb_vue___default.a
     }
 });
 
@@ -15594,9 +15594,9 @@ exports.push([module.i, "\n.text-position[data-v-205ab8f7],\n.v-exp-file p[data-
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_ContextMenu_vue__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_ContextMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_ContextMenu_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_js_option__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__js_option__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fortawesome_vue_fontawesome__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fortawesome_fontawesome_svg_core__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fortawesome_free_regular_svg_icons__ = __webpack_require__(33);
@@ -15749,7 +15749,7 @@ __WEBPACK_IMPORTED_MODULE_3__fortawesome_fontawesome_svg_core__["c" /* library *
             this.$emit('file-rename', this.file);
         },
         checkIfRename: function checkIfRename(opt) {
-            if (opt instanceof __WEBPACK_IMPORTED_MODULE_1_js_option__["a" /* RenameOption */]) {
+            if (opt instanceof __WEBPACK_IMPORTED_MODULE_1__js_option__["a" /* RenameOption */]) {
                 this.rename();
             }
         }
@@ -15776,7 +15776,7 @@ __WEBPACK_IMPORTED_MODULE_3__fortawesome_fontawesome_svg_core__["c" /* library *
         }
     },
     components: {
-        'v-context-menu': __WEBPACK_IMPORTED_MODULE_0_components_ContextMenu_vue___default.a,
+        'v-context-menu': __WEBPACK_IMPORTED_MODULE_0__ContextMenu_vue___default.a,
         'fa-icon': __WEBPACK_IMPORTED_MODULE_2__fortawesome_vue_fontawesome__["a" /* FontAwesomeIcon */]
     }
 });
@@ -17299,7 +17299,7 @@ exports.push([module.i, "\n.v-exp-breadcrumb[data-v-27ef61be] {\n  display: bloc
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store_store__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(4);
 //
 //
 //
@@ -17311,7 +17311,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    store: __WEBPACK_IMPORTED_MODULE_0_store_store__["a" /* default */],
+    store: __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* default */],
     methods: {
         click: function click(name) {
             var index = this.path.map(function (p) {

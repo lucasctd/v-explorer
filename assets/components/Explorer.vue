@@ -191,15 +191,13 @@ export default {
             this.localFiles[file.index] = generateBlankFile(file.index);
         },
         dblclick(file) {
-            this.openFolder(file);
+            if(file.dir) {
+                this.openFolder(file);
+            }
+            this.$emit('dblclick', file);
         },
 		openFolder(folder) {
-			if(folder.dir) {
-                this.$store.commit('addItemToPath', new Breadcrumb(folder.name, folder));
-                this.$emit('dblclick', folder);
-            } else {
-				throw `"${folder.name}" is not a folder. Make sure to set "folder.dir = true"`;
-			}
+            this.$store.commit('addItemToPath', new Breadcrumb(folder.name, folder));
 		},
         sleep(seconds) {
             return new Promise((resolve) => {

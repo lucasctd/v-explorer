@@ -197,7 +197,11 @@ export default {
             this.$emit('dblclick', file);
         },
 		openFolder(folder) {
-            this.$store.commit('addItemToPath', new Breadcrumb(folder.name, folder));
+            if(folder.dir) {
+                this.$store.commit('addItemToPath', new Breadcrumb(folder.name, folder));
+            } else {
+                throw `"${folder.name}" is not a folder. Make sure to set "folder.dir = true"`;
+            }
 		},
         sleep(seconds) {
             return new Promise((resolve) => {

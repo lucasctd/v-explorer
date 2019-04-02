@@ -20,11 +20,7 @@ const storeModule = {
             state.selectedFiles = [];
         },
         addItemToPath(state, item) {
-            if(item.dir) {
-                state.path.push(item);
-            } else {
-                throw `"${item.name}" is not a folder. Make sure to set "folder.dir = true"`;
-            }
+            state.path.push(item);
         },
         openFolder(state, item) {
             this.commit('addItemToPath', item);
